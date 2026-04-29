@@ -151,6 +151,13 @@ source("scripts/analysis/convert_xvg_to_csv.R")
 
 ---
 
+## Example Output
+
+![Example RMSD plot](plots/rmsd_example_plot.png)
+
+---
+
+
 ## Documentation
 
 Detailed step-by-step instructions for the full workflow, including `GROMACS` post-processing commands and analysis procedures, are provided in:
