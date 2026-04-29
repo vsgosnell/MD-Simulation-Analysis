@@ -1,3 +1,13 @@
+## Computational Environment
+
+Simulation and post-processing scripts were designed for a SLURM-based HPC environment using:
+
+- GROMACS 2020.4
+- OpenMPI
+- Environment Modules
+
+The scripts are not intended to run directly on a local workstation unless GROMACS, MPI, and equivalent module-loading commands are available or modified.
+
 ## System Preparation
 - Protein–protein complexes were prepared using CHARMM-GUI.
 - The CHARMM36 force field was applied for protein parameterization.
