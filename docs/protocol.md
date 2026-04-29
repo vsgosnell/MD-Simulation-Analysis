@@ -15,6 +15,18 @@
 - Multiple MD runs were combined where applicable
 - Trajectories were processed using GROMACS tools prior to analysis
 
+## Notes on Index Groups
+
+Several GROMACS commands in this workflow require selecting atom groups (e.g., Protein, Backbone, C-alpha) using an `index.ndx` file.
+
+Group numbers (e.g., `1`, `0`, `4`) are system-dependent and may vary depending on how the index file is generated.
+
+Users should verify group indices using:
+
+```bash
+gmx make_ndx -f input.gro -o index.ndx
+```
+
 ## Analyses Performed
 - Root mean square deviation (RMSD)
 - Root mean square fluctuation (RMSF)
