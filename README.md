@@ -14,21 +14,21 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 - Structure preparation and topology generation (CHARMM → GROMACS conversion)
 - Energy minimization  
 - Equilibration (NVT/NPT)  
-- Molecular dynamics production run  
+- Molecular Dynamics Production run  
 
 ### Trajectory Processing
 - Combination of multiple MD trajectories  
-- Extraction of average structures from simulation trajectories  
+- Extraction of Average Structures from Simulation Trajectories  
 
 ### Structural Analyses
-- Root mean square deviation (RMSD)  
-- Root mean square fluctuation (RMSF)  
-- Radius of gyration (Rg)  
-- Intramolecular hydrogen bond analysis  
+- Root Mean Square Deviation (RMSD)  
+- Root Mean Square Fluctuation (RMSF)  
+- Radius of Gyration (Rg)  
+- Intramolecular Hydrogen Bond Analysis  
 
 ### Structural Visualization & Post-Processing
-- Electrostatic surface representations  
-- Integrated binding mode diagrams  
+- Electrostatic Surface Representations  
+- Integrated Binding Mode Diagrams  
 
 ---
 
