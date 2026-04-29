@@ -1,13 +1,22 @@
 # Molecular Dynamics Analysis of Vaccine-Receptor Complexes
 
 ## Overview
-This repository contains scripts, example data, and figures for analyzing molecular dynamics simulations of vaccine-receptor complexes. The workflow focuses on structural stability and flexibility metrics including RMSD, RMSF, radius of gyration, and hydrogen bonding.
+This repository contains a reproducible post-processing and visualization workflow for molecular dynamics simulations of vaccine-receptor complexes. The pipeline was developed to analyze structural stability, flexibility, compactness, and hydrogen bonding patterns from GROMACS simulation outputs.
+
+The workflow includes scripts for converting GROMACS `.xvg` files into clean `.csv` files, generating publication-ready plots, and documenting the full analysis from raw post-processing output to final figures.
+
+## Analyses Included
+- Root mean square deviation (RMSD)
+- Root mean square fluctuation (RMSF)
+- Radius of gyration (Rg)
+- Intramolecular hydrogen bond analysis
 
 ## Repository Structure
-- `scripts/` : R scripts used for MD analysis and plotting
-- `data/` : small example input files for analysis
-- `plots/` : example output figures
-- `docs/` : protocol and workflow documentation
+- `scripts/` — R scripts for file conversion, analysis, and plotting
+- `data/` — small example datasets used to demonstrate the workflow
+- `plots/` — example output figures generated from the analysis scripts
+- `docs/` — step-by-step workflow documentation and analysis vignette
+- `results/` — placeholder folder for local full-size results, excluded from GitHub when necessary
 
 ## Tools Used
 - GROMACS
@@ -15,16 +24,32 @@ This repository contains scripts, example data, and figures for analyzing molecu
 - ggplot2
 - PyMOL
 
-## Analyses Included
-- RMSD
-- RMSF
-- Radius of gyration (Rg)
-- Intramolecular Hydrogen bond analysis
-
 ## Data Availability
+Full molecular dynamics trajectories and large simulation outputs are not included due to file size and ongoing research considerations.
 
-Full MD simulation datasets (e.g., trajectory files) are not included due to file size and ongoing research considerations.
+Representative processed datasets are provided in the `data/` directory so that the analysis workflow can be reproduced. Users may substitute their own GROMACS-derived `.xvg` or `.csv` files using the same expected format.
 
-A representative subset of processed data is provided in the `data/` directory to demonstrate the analysis workflow. The scripts can be modified to support multiple simulation runs and complexes.
+## Reproducing the Example Analysis
 
-Figures shown in the `plots/` directory were generated using either the example or full datasets.
+Run the full example workflow from the repository root:
+
+```r
+source("scripts/06_generate_all_plots.R") 
+```
+
+## Run Individual Analyses
+
+Each analysis can also be executed independently:
+
+```r
+source("scripts/02_plot_rmsd.R")
+source("scripts/03_plot_rmsf.R")
+source("scripts/04_plot_rg.R")
+source("scripts/05_plot_hbonds.R")
+```
+
+## Citation
+
+If you use or adapt this workflow, please cite this repository.
+
+A formal manuscript describing this pipeline is in preparation.
