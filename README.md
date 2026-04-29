@@ -35,7 +35,27 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 ## Repository Structure
 
 ```
-├── scripts/        # R scripts for data conversion, analysis, and plotting
+scripts/
+├── simulation/
+│   ├── minimization_equilibration.sh
+│   ├── production_run1.sh
+│   └── production_run2.sh
+│
+├── post_processing/
+│   ├── combine_trajectories.sh
+│   ├── extract_average_frame.sh
+│   ├── calculate_rmsd.sh
+│   ├── calculate_rmsf.sh
+│   ├── calculate_rg.sh
+│   └── calculate_hbonds.sh
+│
+└── plotting/
+    ├── convert_xvg_to_csv.R
+    ├── plot_rmsd.R
+    ├── plot_rmsf.R
+    ├── plot_rg.R
+    ├── plot_hbonds.R
+    └── generate_all_plots.R
 ├── data/           # Example processed datasets (CSV format)
 ├── plots/          # Example output figures
 ├── docs/           # Workflow documentation and analysis vignette
@@ -63,12 +83,23 @@ Representative processed datasets are provided in the `data/` directory to demon
 
 ## Reproducing the Analysis
 
+### Simulation
+
+Energy minimization and equilibration are performed sequentially within a single script:
+
+```bash
+bash scripts/simulation/minimization_equilibration.sh
+bash scripts/simulation/production_run1.sh
+bash scripts/simulation/production_run2.sh
+```
+
+
 ### Run Complete Workflow
 
 From the repository root:
 
 ```r
-source("scripts/06_generate_all_plots.R")
+source("scripts/generate_all_plots.R")
 ```
 
 ## Run Individual Analyses
@@ -76,10 +107,10 @@ source("scripts/06_generate_all_plots.R")
 Each analysis can also be executed independently:
 
 ```r
-source("scripts/02_plot_rmsd.R")
-source("scripts/03_plot_rmsf.R")
-source("scripts/04_plot_rg.R")
-source("scripts/05_plot_hbonds.R")
+source("scripts/plot_rmsd.R")
+source("scripts/plot_rmsf.R")
+source("scripts/plot_rg.R")
+source("scripts/plot_hbonds.R")
 ```
 
 ## Input Requirements
@@ -94,7 +125,7 @@ The workflow expects processed GROMACS output files (converted to `.csv`), deriv
 Conversion from `.xvg` to `.csv` can be performed using:
 
 ```r
-source("scripts/01_convert_xvg_to_csv.R")
+source("scripts/convert_xvg_to_csv.R")
 ```
 
 ## Documentation
