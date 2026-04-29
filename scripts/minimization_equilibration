@@ -9,7 +9,7 @@
 set -euo pipefail
 
 ###############################################################################
-# 01_minimization_equilibration.sh
+# minimization_equilibration.sh
 #
 # Purpose:
 #   Perform energy minimization followed by equilibration for a
