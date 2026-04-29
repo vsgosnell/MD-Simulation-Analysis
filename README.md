@@ -43,19 +43,16 @@ scripts/
 │
 ├── post_processing/
 │   ├── combine_trajectories.sh
-│   ├── extract_average_frame.sh
-│   ├── calculate_rmsd.sh
-│   ├── calculate_rmsf.sh
-│   ├── calculate_rg.sh
-│   └── calculate_hbonds.sh
+│   └── extract_average_frame.sh
 │
-└── plotting/
+└── analysis/
     ├── convert_xvg_to_csv.R
     ├── plot_rmsd.R
     ├── plot_rmsf.R
     ├── plot_rg.R
     ├── plot_hbonds.R
     └── generate_all_plots.R
+
 ├── data/           # (.csv format)
 ├── plots/          
 ├── docs/           
