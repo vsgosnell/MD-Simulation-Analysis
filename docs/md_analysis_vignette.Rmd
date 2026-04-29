@@ -1,0 +1,516 @@
+---
+title: "Molecular Dynamics Analysis Workflow"
+author: "Veronica Gosnell"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+# Overview
+
+This vignette demonstrates the analysis workflow used to process and visualize Molecular Dynamics (MD) simulation outputs from Vaccine–Receptor complexes.
+
+The workflow includes:
+
+- Trajectory Combination and Processing
+- Root Mean Square Deviation (RMSD) analysis
+- Root Mean Square Fluctuation (RMSF) analysis
+- Radius of Gyration (Rg) analysis
+- Hydrogen Bond analysis
+- Representative Structure Extraction
+- Comparison of Docking and MD-Refined Structures
+- Electrostatic Surface Representation
+
+---
+
+# Setup
+
+```{r setup, include=FALSE}
+repo_root <- normalizePath("..", mustWork = TRUE)
+plot_dir <- file.path(repo_root, "plots")
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 8,
+  fig.height = 5
+)
+
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(patchwork)
+```
+---
+
+# Running the Full Analysis
+
+The complete local analysis workflow can be run from the repository root using:
+
+```{r run-full-analysis, eval=FALSE, echo=TRUE}
+source("scripts/analysis/run_analysis.R")
+```
+
+---
+
+# Trajectory Combination and Processing
+
+Multiple production trajectory segments were combined and processed prior to downstream analysis. This step generates a continuous trajectory and applies periodic boundary condition correction and centering for visualization and analysis.
+
+The trajectory processing workflow is provided in:
+
+```bash
+scripts/post_processing/combine_trajectories.sh
+```
+
+## Run Trajectory Processing
+
+From the repository root:
+
+```bash
+bash scripts/post_processing/combine_trajectories.sh
+```
+
+## Workflow Summary
+
+The script performs the following steps:
+
+1. Generates an index file using the input structure.
+2. Combines production trajectory segments into a single trajectory.
+3. Applies periodic boundary condition correction.
+4. Centers the system for downstream analysis.
+5. Generates processed trajectory files for full-system and protein-focused analyses.
+
+## GROMACS Commands
+
+Create an index file:
+
+```bash
+gmx make_ndx -f step3_input.gro -o index.ndx
+```
+
+Combine trajectory segments:
+
+```bash
+gmx trjcat -f step5_production.xtc step5_production.part*.xtc -o step-all.xtc
+```
+
+Apply PBC correction and centering:
+
+```bash
+gmx trjconv -f step-all.xtc -s step5_production.tpr -n index.ndx \
+  -pbc mol -ur compact -center -o out.xtc
+```
+
+Generate a protein-centered trajectory:
+
+```bash
+gmx trjconv -f step-all.xtc -s step5_production.tpr -n index.ndx \
+  -pbc mol -ur compact -center -o out_prot.xtc
+```
+
+## Output Files
+
+- `index.ndx` — GROMACS index file
+- `step-all.xtc` — combined production trajectory
+- `out.xtc` — PBC-corrected and centered trajectory
+- `out_prot.xtc` — protein-centered trajectory for downstream analysis
+
+---
+
+# RMSD Analysis
+
+```{r rmsd-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "rmsd_example_plot.png"))
+```
+
+---
+
+# RMSF Analysis
+
+```{r rmsf-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "rmsf_example_plot.png"))
+```
+
+---
+
+# Radius of Gyration Analysis
+
+```{r rg-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "rg_example_plot.png"))
+```
+
+---
+
+# Hydrogen Bond Analysis
+
+```{r hbonds-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "hbond_example_plot.png"))
+```
+
+---
+
+# Notes
+
+- HPC scripts are designed for SLURM-based clusters
+- Group indices in GROMACS may vary depending on the system
+
+---
+
+# Representative Structure Extraction
+
+Representative structures were extracted from the processed MD trajectory using GROMACS. This step fits the trajectory, performs clustering, and extracts a central representative structure for downstream visualization and electrostatic surface analysis.
+
+The extraction workflow is provided in:
+
+```bash
+scripts/post_processing/extract_average_frame.sh
+```
+
+## Run Representative Structure Extraction
+
+From the repository root:
+
+```bash
+bash scripts/post_processing/extract_average_frame.sh
+```
+
+## Workflow Summary
+
+The script performs the following steps:
+
+1. Fits the trajectory using rotational and translational alignment.
+2. Clusters the fitted trajectory using the GROMOS method.
+3. Extracts a representative central structure from the clustered trajectory.
+
+## GROMACS Commands
+
+Fit the combined trajectory:
+
+```bash
+gmx trjconv -s step5_production.tpr -f step-all.xtc -o fitted.xtc -fit rot+trans
+```
+
+Cluster the fitted trajectory:
+
+```bash
+gmx cluster -s step5_production.tpr -f fitted.xtc -n index.ndx \
+  -o clusters.xpm -g cluster.log -cl central_structures.pdb \
+  -method gromos -cutoff 0.25
+```
+
+Extract the representative structure:
+
+```bash
+gmx trjconv -f central_structures.pdb -s step5_production.tpr \
+  -o md_rep_structure.pdb -dump 0
+```
+
+## Output Files
+
+- `fitted.xtc` — fitted trajectory
+- `clusters.xpm` — cluster matrix
+- `cluster.log` — clustering summary
+- `central_structures.pdb` — representative structures from clustering
+- `md_rep_structure.pdb` — final representative structure used for visualization
+
+---
+
+# Comparison of Docking and MD-Refined Structures
+
+To evaluate structural changes induced by molecular dynamics simulations, the representative MD structure (`md_rep_structure.pdb`) was compared to the initial docking complex.
+
+This comparison assesses structural stability, interface refinement, and conformational adjustments that occur during the simulation.
+
+---
+
+## Purpose
+
+- Evaluate deviation from the initial docking pose  
+- Assess structural stability after MD simulation  
+- Identify interface rearrangements and conformational refinement  
+
+---
+
+## Structural Alignment in PyMOL
+
+Load both structures:
+
+```python
+load docking_complex.pdb, docking
+load md_rep_structure.pdb, md
+```
+
+Align the MD-refined structure to the docking structure:
+
+```python
+align md, docking
+```
+
+Alternatively, for more accurate alignment:
+
+```python
+super md, docking
+```
+
+```{r md-vs-docked-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "comparison/md_vs_docked.png"))
+```
+
+*Figure: Overlay of the initial docked complex and representative MD-refined structure.*
+
+---
+
+## RMSD Evaluation
+
+PyMOL reports RMSD after alignment:
+
+```python
+rms_cur md, docking
+```
+
+Lower RMSD values indicate structural stability, while higher values suggest conformational rearrangement during simulation.
+
+---
+
+## Visualization
+
+Overlay both structures:
+
+```python
+show cartoon, docking
+color gray, docking
+
+show cartoon, md
+color cyan, md
+```
+
+Adjust transparency for comparison:
+
+```python
+set cartoon_transparency, 0.5, docking
+```
+
+---
+
+## Interface Comparison
+
+Highlight interface residues:
+
+```python
+select interface_md, byres (md within 4 of docking)
+show sticks, interface_md
+color orange, interface_md
+```
+
+---
+
+## Interpretation
+
+- **Low RMSD (< 2–3 Å):**  
+  Indicates structural stability and preservation of the docking pose.
+
+- **Moderate RMSD (3–5 Å):**  
+  Suggests minor conformational adjustments, often improving interface packing.
+
+- **High RMSD (> 5 Å):**  
+  Indicates significant structural rearrangement, potentially reflecting instability or alternative binding modes.
+
+Structural deviations should be interpreted alongside RMSD, RMSF, and hydrogen bonding analyses to determine whether changes are stabilizing or destabilizing.
+
+---
+
+## Output
+
+Representative comparison images can be generated in PyMOL:
+
+```python
+ray 3000,3000
+png docking_vs_md.png
+```
+
+Multiple orientations are recommended to capture interface changes.
+
+---
+
+# Electrostatic Surface Representation
+
+This section describes the workflow used to compute and visualize Electrostatic Surface Potentials for representative MD structures using APBS and PyMOL.
+
+---
+
+## Environment Setup
+
+Create and activate a dedicated Conda environment:
+
+```bash
+conda create -n electrostatics_env python=3.10 -y
+conda activate electrostatics_env
+conda install -c conda-forge pdb2pqr apbs
+```
+
+---
+
+## Structure Preparation
+
+Convert the representative MD structure (`md_rep_structure.pdb`) to PQR format:
+
+```bash
+pdb2pqr30 --ff CHARMM md_rep_structure.pdb complex_md.pqr
+```
+
+---
+
+## APBS Input File
+
+Create an APBS input file (e.g., `complex_md.in`):
+
+```bash
+nano complex_md.in
+```
+
+Insert the following:
+
+```
+read
+  mol pqr complex_md.pqr
+end
+
+elec
+  mg-auto
+  dime 161 161 161
+  cglen 160.0 160.0 160.0
+  fglen 140.0 140.0 140.0
+  cgcent mol 1
+  fgcent mol 1
+  mol 1
+  lpbe
+  bcfl sdh
+  ion charge 1 conc 0.15 radius 2.0
+  ion charge -1 conc 0.15 radius 2.0
+  pdie 2.0
+  sdie 78.54
+  srfm smol
+  chgm spl2
+  sdens 10.0
+  srad 1.4
+  swin 0.3
+  temp 298.15
+  calcenergy no
+  calcforce no
+  write
+    pot dx complex_md
+  end
+end
+
+quit
+```
+
+Save and exit.
+
+---
+
+## Run APBS
+
+```bash
+apbs complex_md.in
+```
+
+This generates an electrostatic potential map (`.dx` file).
+
+---
+
+## Visualization in PyMOL
+
+Load the structure and electrostatic map:
+
+```python
+load complex_md.pqr, complex
+load complex_md.dx, complex_map
+```
+
+```{r electrostatics-load-structure, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/load_structure.png"))
+```
+
+
+Create an electrostatic color ramp:
+
+```python
+ramp_new complex_pot, complex_map, [-15, 0, 15]
+```
+
+```{r electrostatics-color-ramp, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/color_ramp.png"))
+```
+
+---
+
+## Interface Visualization
+
+Define vaccine and receptor components (manual renaming may be required depending on chain assignments):
+
+```python
+# Rename selections appropriately in PyMOL
+# Example:
+# rename complex → receptor
+# rename chain(s) → vaccine
+```
+
+Highlight interface residues:
+
+```python
+select interface, byres (vaccine within 4 of receptor)
+show sticks, interface
+color orange, interface
+```
+
+```{r electrostatics-interface, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/interface.png"))
+```
+
+---
+
+## Electrostatic Surface Rendering
+
+### Vaccine Surface
+
+```python
+set surface_color, complex_pot, vaccine
+show surface, vaccine
+set transparency, 0.15, vaccine
+set surface_quality, 1
+set two_sided_lighting, on
+```
+
+```{r electrostatics-vaccine-surface, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/vaccine_surface.png"))
+```
+
+### Receptor Representation
+
+```python
+show cartoon, receptor
+color lightblue, receptor
+set cartoon_transparency, 0.80, receptor
+```
+
+```{r electrostatics-receptor-cartoon, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/receptor_surface.png"))
+```
+
+---
+
+## Output
+
+High-resolution images can be generated using PyMOL rendering:
+
+```python
+ray 3000,3000
+png electrostatic_surface.png
+```
+
+Multiple orientations (e.g., 180° rotations) are recommended for publication-quality figures.
