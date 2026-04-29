@@ -192,7 +192,7 @@ source("scripts/analysis/convert_xvg_to_csv.R")
 Detailed step-by-step instructions for the full workflow, including `GROMACS` post-processing commands and analysis procedures, are provided in:
 
 ```r
-docs/md_analysis_vignette.md
+docs/md_analysis_vignette.html
 ```
 
 ---
