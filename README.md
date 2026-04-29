@@ -82,6 +82,8 @@ Representative processed datasets are provided in the `data/` directory to demon
 
 ### Note: The simulation and post-processing shell scripts are designed for execution on a SLURM-based HPC cluster with GROMACS 2020.4 and OpenMPI available through environment modules. These scripts may require modification for local workstations or non-SLURM systems.
 
+---
+
 ### Simulation
 
 Energy minimization and equilibration are performed sequentially within a single script, followed by the production runs:
@@ -92,6 +94,7 @@ bash scripts/simulation/production_run1.sh
 bash scripts/simulation/production_run2.sh
 ```
 
+---
 
 ### Run Complete Workflow
 
@@ -100,6 +103,10 @@ From the repository root:
 ```r
 source("scripts/run_all.sh")
 ```
+
+This script submits all simulation and post-processing jobs with proper dependencies.
+
+---
 
 ## Run Individual Analyses
 
@@ -112,6 +119,8 @@ source("scripts/analysis/plot_rg.R")
 source("scripts/analysis/plot_hbonds.R")
 ```
 
+---
+
 ## Input Requirements
 
 The workflow expects processed GROMACS output files (converted to `.csv`), derived from:
@@ -121,11 +130,15 @@ The workflow expects processed GROMACS output files (converted to `.csv`), deriv
 - Radius of gyration (`gmx gyrate`)
 - Hydrogen bonds (`gmx hbond`)
 
+---
+
 Conversion from `.xvg` to `.csv` can be performed using:
 
 ```r
 source("scripts/analysis/convert_xvg_to_csv.R")
 ```
+
+---
 
 ## Documentation
 
@@ -134,6 +147,8 @@ Detailed step-by-step instructions for the full workflow, including `GROMACS` po
 ```r
 docs/md_analysis_vignette.md
 ```
+
+---
 
 ## Citation
 
