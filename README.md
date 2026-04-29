@@ -124,7 +124,7 @@ The workflow expects processed GROMACS output files (converted to `.csv`), deriv
 Conversion from `.xvg` to `.csv` can be performed using:
 
 ```r
-source("scripts/analysisconvert_xvg_to_csv.R")
+source("scripts/analysis/convert_xvg_to_csv.R")
 ```
 
 ## Documentation
