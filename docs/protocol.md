@@ -8,7 +8,6 @@
 ## Simulation Stages
 1. Energy minimization (steepest descent algorithm, GROMACS)
 2. Equilibration:
-   - NVT ensemble (constant number of particles, volume, and temperature)
    - NPT ensemble (constant number of particles, pressure, and temperature)
 3. Production MD simulations (100 ns, GROMACS)
 
