@@ -85,10 +85,10 @@ source("scripts/05_plot_hbonds.R")
 
 The workflow expects processed GROMACS output files (converted to `.csv`), derived from:
 
-RMSD (`gmx rms`)
-RMSF (`gmx rmsf`)
-Radius of gyration (`gmx gyrate`)
-Hydrogen bonds (`gmx hbond`)
+- RMSD (`gmx rms`)
+- RMSF (`gmx rmsf`)
+- Radius of gyration (`gmx gyrate`)
+- Hydrogen bonds (`gmx hbond`)
 
 Conversion from `.xvg` to `.csv` can be performed using:
 
