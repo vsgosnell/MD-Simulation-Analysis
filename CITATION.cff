@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: "Molecular Dynamics Analysis of Vaccine-Receptor Complexes"
+authors:
+  - family-names: Gosnell
+    given-names: Veronica
+date-released: 2026-04-29
+version: 1.0.0
+message: "If you use or adapt this workflow, please cite this repository."
+license: MIT
