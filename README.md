@@ -98,7 +98,7 @@ bash scripts/simulation/production_run2.sh
 From the repository root:
 
 ```r
-source("scripts/generate_all_plots.R")
+source("scripts/run_all.sh")
 ```
 
 ## Run Individual Analyses
