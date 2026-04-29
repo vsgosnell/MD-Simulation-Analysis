@@ -41,6 +41,8 @@ gmx make_ndx -f input.gro -o index.ndx
 - Radius of gyration (Rg)
 - Intramolecular hydrogen bond analysis
 
+---
+
 ## Visualization
 - MD analysis plots were generated in R using ggplot2
 - Structural visualizations and electrostatic surface representations were generated using PyMOL
