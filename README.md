@@ -1,46 +1,70 @@
-# Molecular Dynamics Analysis of Vaccine-Receptor Complexes
+# Molecular Dynamics Analysis of Vaccine–Receptor Complexes
 
 ## Overview
-This repository contains a reproducible pre-processing, post-processing, and visualization workflow for molecular dynamics simulations of vaccine-receptor complexes. The pipeline was developed to analyze structural stability, flexibility, compactness, and hydrogen bonding patterns from GROMACS simulation outputs.
 
-The workflow includes scripts for converting GROMACS `.xvg` files into clean `.csv` files, generating publication-ready plots, and documenting the full analysis from raw pre-processing output to final figures.
+This repository provides a reproducible workflow for the **pre-processing, post-processing, and visualization** of molecular dynamics (MD) simulations of vaccine–receptor complexes generated using GROMACS. The pipeline is designed to evaluate key structural properties including stability, flexibility, compactness, and hydrogen bonding behavior.
+
+The workflow emphasizes modularity and reproducibility, enabling users to apply the same analysis pipeline to multiple simulation runs and complexes.
+
+---
 
 ## Analyses Included
-- Minimization and Equilibration
-- Molecular Dynamics Production run
-- Combine multiple MD run trajectories 
-- Root mean square deviation (RMSD)
-- Root mean square fluctuation (RMSF)
-- Radius of gyration (Rg)
-- Intramolecular hydrogen bond analysis
-- Extract Average Frame from MD simulation run
-- Electrostatic Surface Representations
-- Integrated Binding Mode Diagram
+
+### Simulation Workflow (GROMACS)
+- Energy minimization  
+- Equilibration (NVT/NPT)  
+- Molecular dynamics production run  
+
+### Trajectory Processing
+- Combination of multiple MD trajectories  
+- Extraction of average structures from simulation trajectories  
+
+### Structural Analyses
+- Root mean square deviation (RMSD)  
+- Root mean square fluctuation (RMSF)  
+- Radius of gyration (Rg)  
+- Intramolecular hydrogen bond analysis  
+
+### Structural Visualization & Post-Processing
+- Electrostatic surface representations  
+- Integrated binding mode diagrams  
+
+---
 
 ## Repository Structure
-- `scripts/` — R scripts for file conversion, analysis, and plotting
-- `data/` — small example datasets used to demonstrate the workflow
-- `plots/` — example output figures generated from the analysis scripts
-- `docs/` — step-by-step workflow documentation and analysis vignette
-- `results/` — placeholder folder for local full-size results, excluded from GitHub when necessary
+├── scripts/ # R scripts for data conversion, analysis, and plotting
+├── data/ # Example processed datasets (CSV format)
+├── plots/ # Example output figures
+├── docs/ # Workflow documentation and analysis vignette
+└── results/ # Placeholder for full outputs (not tracked in Git)
 
-## Tools Used
-- GROMACS
-- R
-- ggplot2
-- PyMOL
+---
+
+## Tools and Software
+
+- **GROMACS** — molecular dynamics simulations and trajectory analysis  
+- **R** — data processing and statistical analysis  
+- **ggplot2** — data visualization  
+- **PyMOL** — structural visualization and figure generation  
+
+---
 
 ## Data Availability
-Full molecular dynamics trajectories and large simulation outputs are not included due to file size and ongoing research considerations.
 
-Representative processed datasets are provided in the `data/` directory so that the analysis workflow can be reproduced. Users may substitute their own GROMACS-derived `.xvg` or `.csv` files using the same expected format.
+Full molecular dynamics trajectories (e.g., `.xtc`, `.trr`) and large simulation outputs are not included due to file size limitations and ongoing research considerations.
 
-## Reproducing the Example Analysis
+Representative processed datasets are provided in the `data/` directory to demonstrate the analysis workflow. Users may substitute their own GROMACS-generated outputs using the same input format.
 
-Run the full example workflow from the repository root:
+---
+
+## Reproducing the Analysis
+
+### Run Complete Workflow
+
+From the repository root:
 
 ```r
-source("scripts/06_generate_all_plots.R") 
+source("scripts/06_generate_all_plots.R")
 ```
 
 ## Run Individual Analyses
@@ -54,8 +78,31 @@ source("scripts/04_plot_rg.R")
 source("scripts/05_plot_hbonds.R")
 ```
 
+## Input Requirements
+
+The workflow expects processed GROMACS output files (converted to `.csv`), derived from:
+
+RMSD (`gmx rms`)
+RMSF (`gmx rmsf`)
+Radius of gyration (`gmx gyrate`)
+Hydrogen bonds (`gmx hbond`)
+
+Conversion from `.xvg` to `.csv` can be performed using:
+
+```r
+source("scripts/01_convert_xvg_to_csv.R")
+```
+
+## Documentation
+
+Detailed step-by-step instructions for the full workflow, including `GROMACS` post-processing commands and analysis procedures, are provided in:
+
+```r
+docs/md_analysis_vignette.md
+```
+
 ## Citation
 
 If you use or adapt this workflow, please cite this repository.
 
-A formal manuscript describing this pipeline is in preparation.
+A formal manuscript describing this pipeline is currently in preparation.
