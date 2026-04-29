@@ -106,10 +106,10 @@ source("scripts/run_all.sh")
 Each analysis can also be executed independently:
 
 ```r
-source("scripts/plot_rmsd.R")
-source("scripts/plot_rmsf.R")
-source("scripts/plot_rg.R")
-source("scripts/plot_hbonds.R")
+source("scripts/analysis/plot_rmsd.R")
+source("scripts/analysis/plot_rmsf.R")
+source("scripts/analysis/plot_rg.R")
+source("scripts/analysis/plot_hbonds.R")
 ```
 
 ## Input Requirements
