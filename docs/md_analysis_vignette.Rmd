@@ -256,12 +256,6 @@ Alternatively, for more accurate alignment:
 super md, docking
 ```
 
-```{r md-vs-docked-plot, echo=FALSE, out.width="85%", fig.align="center"}
-knitr::include_graphics(file.path(plot_dir, "comparison/md_vs_docked.png"))
-```
-
-*Figure: Overlay of the initial docked complex and representative MD-refined structure.*
-
 ---
 
 ## RMSD Evaluation
@@ -305,6 +299,12 @@ select interface_md, byres (md within 4 of docking)
 show sticks, interface_md
 color orange, interface_md
 ```
+
+```{r md-vs-docked-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "comparison/md_vs_docked.png"))
+```
+
+*Figure: Overlay of the initial docked complex and representative MD-refined structure.*
 
 ---
 
@@ -433,7 +433,7 @@ load complex_md.dx, complex_map
 ```
 
 ```{r electrostatics-load-structure, echo=FALSE, out.width="85%", fig.align="center"}
-knitr::include_graphics(file.path(plot_dir, "electrostatics/load_structure.png"))
+knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_structure.png"))
 ```
 
 
@@ -469,14 +469,14 @@ color orange, interface
 ```
 
 ```{r electrostatics-interface, echo=FALSE, out.width="85%", fig.align="center"}
-knitr::include_graphics(file.path(plot_dir, "electrostatics/interface.png"))
+knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_interface.png"))
 ```
 
 ---
 
 ## Electrostatic Surface Rendering
 
-### Vaccine Surface
+### Vaccine Electrostatic Representation
 
 ```python
 set surface_color, complex_pot, vaccine
@@ -490,7 +490,7 @@ set two_sided_lighting, on
 knitr::include_graphics(file.path(plot_dir, "electrostatics/vaccine_surface.png"))
 ```
 
-### Receptor Representation
+### Receptor Electrostatic Representation
 
 ```python
 show cartoon, receptor
@@ -500,6 +500,19 @@ set cartoon_transparency, 0.80, receptor
 
 ```{r electrostatics-receptor-cartoon, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "electrostatics/receptor_surface.png"))
+```
+
+---
+
+## Alternative View (Receptor Surface)
+
+```python
+set surface_color, complex_pot, receptor
+show surface, receptor
+set transparency, 0.15, receptor
+hide surface, vaccine
+show cartoon, vaccine
+set cartoon_transparency, 0.80, vaccine
 ```
 
 ---
