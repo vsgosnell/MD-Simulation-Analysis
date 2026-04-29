@@ -1,0 +1,106 @@
+#!/bin/bash
+#SBATCH --job-name=min_equil
+#SBATCH --output=logs/min_equil_%j.out
+#SBATCH --error=logs/min_equil_%j.err
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=24
+#SBATCH --time=04:00:00
+
+set -euo pipefail
+
+###############################################################################
+# 01_minimization_equilibration.sh
+#
+# Purpose:
+#   Perform energy minimization followed by equilibration for a
+#   GROMACS molecular dynamics system generated from CHARMM-GUI.
+#
+# Inputs:
+#   - step3_input.gro
+#   - topol.top
+#   - index.ndx
+#   - step4.0_minimization.mdp
+#   - step4.1_equilibration.mdp
+#
+# Outputs:
+#   - step4.0_minimization.*
+#   - step4.1_equilibration.*
+###############################################################################
+
+mkdir -p logs
+
+echo "Starting minimization and equilibration workflow"
+echo "Job ID: ${SLURM_JOB_ID:-local}"
+echo "Running on: $(hostname)"
+echo "Start time: $(date)"
+
+# Load required modules
+module purge
+module load mpi/openmpi
+module load apps/gromacs/2020.4
+
+# Cluster-specific MPI/GROMACS settings
+export OMPI_MCA_pml=ob1
+export OMPI_MCA_btl=tcp,self,sm
+export OMPI_MCA_orte_base_help_aggregate=0
+export LD_LIBRARY_PATH=/usr/lib64/psm2-compat:${LD_LIBRARY_PATH:-}
+export GMX_MAXCONSTRWARN=-1
+
+# Input files
+INPUT_GRO="step3_input.gro"
+TOPOLOGY="topol.top"
+INDEX="index.ndx"
+
+MIN_MDP="step4.0_minimization.mdp"
+EQUIL_MDP="step4.1_equilibration.mdp"
+
+MIN_PREFIX="step4.0_minimization"
+EQUIL_PREFIX="step4.1_equilibration"
+
+# Check required files
+for file in "$INPUT_GRO" "$TOPOLOGY" "$INDEX" "$MIN_MDP" "$EQUIL_MDP"; do
+    if [[ ! -f "$file" ]]; then
+        echo "ERROR: Required file not found: $file"
+        exit 1
+    fi
+done
+
+###############################################################################
+# Step 1: Energy minimization
+###############################################################################
+
+echo "Running energy minimization..."
+
+mpirun gmx_mpi grompp \
+    -f "$MIN_MDP" \
+    -c "$INPUT_GRO" \
+    -r "$INPUT_GRO" \
+    -p "$TOPOLOGY" \
+    -n "$INDEX" \
+    -o "${MIN_PREFIX}.tpr" \
+    -maxwarn 1
+
+mpirun gmx_mpi mdrun \
+    -v \
+    -deffnm "$MIN_PREFIX"
+
+###############################################################################
+# Step 2: Equilibration
+###############################################################################
+
+echo "Running equilibration..."
+
+mpirun gmx_mpi grompp \
+    -f "$EQUIL_MDP" \
+    -c "${MIN_PREFIX}.gro" \
+    -r "$INPUT_GRO" \
+    -p "$TOPOLOGY" \
+    -n "$INDEX" \
+    -o "${EQUIL_PREFIX}.tpr"
+
+mpirun gmx_mpi mdrun \
+    -v \
+    -deffnm "$EQUIL_PREFIX"
+
+echo "Minimization and equilibration completed successfully"
+echo "End time: $(date)"
