@@ -121,6 +121,17 @@ source("scripts/analysis/plot_hbonds.R")
 
 ---
 
+### Local Analysis
+
+The R analysis workflow can be run locally using the example processed datasets:
+
+```r
+source("scripts/analysis/run_analysis.R")
+```
+
+---
+
+
 ## Input Requirements
 
 The workflow expects processed GROMACS output files (converted to `.csv`), derived from:
