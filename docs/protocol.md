@@ -5,15 +5,21 @@
 - Appropriate counterions were added to neutralize the system.
 - CHARMM-GUI was used to generate GROMACS-compatible input files (`.gro`, `.top`, `.itp`, `.mdp`).
 
+---
+
 ## Simulation Stages
 1. Energy minimization (steepest descent algorithm, GROMACS)
 2. Equilibration:
    - NPT ensemble (constant number of particles, pressure, and temperature)
 3. Production MD simulations (100 ns, GROMACS) 
 
+---
+
 ## Trajectory Processing
 - Multiple MD runs were combined where applicable
 - Trajectories were processed using GROMACS tools prior to analysis
+
+---
 
 ## Notes on Index Groups
 
@@ -26,6 +32,8 @@ Users should verify group indices using:
 ```bash
 gmx make_ndx -f input.gro -o index.ndx
 ```
+
+---
 
 ## Analyses Performed
 - Root mean square deviation (RMSD)
