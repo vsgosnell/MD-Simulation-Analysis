@@ -80,6 +80,8 @@ Representative processed datasets are provided in the `data/` directory to demon
 
 ## Reproducing the Analysis
 
+### Note: The simulation and post-processing shell scripts are designed for execution on a SLURM-based HPC cluster with GROMACS 2020.4 and OpenMPI available through environment modules. These scripts may require modification for local workstations or non-SLURM systems.
+
 ### Simulation
 
 Energy minimization and equilibration are performed sequentially within a single script, followed by the production runs:
