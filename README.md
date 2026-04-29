@@ -85,7 +85,7 @@ Representative processed datasets are provided in the `data/` directory to demon
 
 ### Simulation
 
-Energy minimization and equilibration are performed sequentially within a single script:
+Energy minimization and equilibration are performed sequentially within a single script, followed by the production runs:
 
 ```bash
 bash scripts/simulation/minimization_equilibration.sh
