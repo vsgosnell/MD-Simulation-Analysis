@@ -34,7 +34,6 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 ## Repository Structure
 
 ```
-.
 ├── scripts/        # R scripts for data conversion, analysis, and plotting
 ├── data/           # Example processed datasets (CSV format)
 ├── plots/          # Example output figures
