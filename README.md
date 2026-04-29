@@ -51,12 +51,41 @@ scripts/
     ├── plot_rmsf.R
     ├── plot_rg.R
     ├── plot_hbonds.R
-    └── generate_all_plots.R
-
-├── data/           # (.csv format)
-├── plots/          
-├── docs/           
-└── results/        
+    └── run_analysis.R
+data/ 
+    ├── hbonds.csv
+    ├── rg_receptor.csv
+    ├── rg_vaccine.csv
+    ├── rmsd.csv
+    ├── rmsf_receptor.csv
+    ├── rmsf_vaccine.csv
+    └── rmsd.xvg 
+plots/
+    ├── hbond_example_plot.png
+    ├── hbonds_complexes.png
+    ├── rg.png
+    ├── rg_example_plot.png
+    ├── rmsd_complexes.png
+    ├── rmsd_example_plot.png
+    ├── rmsf.png
+    └── rmsf_example_plot.png
+    ├── comparison
+        └── md_vs_docked.png
+    └── electrostatics
+        ├── color_ramp.png
+        ├── md_complex_interface.png
+        ├── md_complex_structure.png
+        ├── receptor_surface.png
+        └── vaccine_surface.png
+├── docs/
+    ├── md_analysis_vignette.Rmd
+    ├── md_analysis_vignette.html
+    └── protocol.md
+├── environment.yml
+├── .gitignore
+├── CITATION.cff
+├── README.md      
+└── run_all.sh        
 ```
 
 ---
