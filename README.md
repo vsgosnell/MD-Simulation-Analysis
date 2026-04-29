@@ -1,15 +1,21 @@
 # Molecular Dynamics Analysis of Vaccine-Receptor Complexes
 
 ## Overview
-This repository contains a reproducible post-processing and visualization workflow for molecular dynamics simulations of vaccine-receptor complexes. The pipeline was developed to analyze structural stability, flexibility, compactness, and hydrogen bonding patterns from GROMACS simulation outputs.
+This repository contains a reproducible pre-processing, post-processing, and visualization workflow for molecular dynamics simulations of vaccine-receptor complexes. The pipeline was developed to analyze structural stability, flexibility, compactness, and hydrogen bonding patterns from GROMACS simulation outputs.
 
-The workflow includes scripts for converting GROMACS `.xvg` files into clean `.csv` files, generating publication-ready plots, and documenting the full analysis from raw post-processing output to final figures.
+The workflow includes scripts for converting GROMACS `.xvg` files into clean `.csv` files, generating publication-ready plots, and documenting the full analysis from raw pre-processing output to final figures.
 
 ## Analyses Included
+- Minimization and Equilibration
+- Molecular Dynamics Production run
+- Combine multiple MD run trajectories 
 - Root mean square deviation (RMSD)
 - Root mean square fluctuation (RMSF)
 - Radius of gyration (Rg)
 - Intramolecular hydrogen bond analysis
+- Extract Average Frame from MD simulation run
+- Electrostatic Surface Representations
+- Integrated Binding Mode Diagram
 
 ## Repository Structure
 - `scripts/` — R scripts for file conversion, analysis, and plotting
