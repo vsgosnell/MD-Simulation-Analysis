@@ -9,7 +9,7 @@
 1. Energy minimization (steepest descent algorithm, GROMACS)
 2. Equilibration:
    - NPT ensemble (constant number of particles, pressure, and temperature)
-3. Production MD simulations (100 ns, GROMACS)
+3. Production MD simulations (100 ns, GROMACS) 
 
 ## Trajectory Processing
 - Multiple MD runs were combined where applicable
