@@ -38,7 +38,7 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 ├── data/           # Example processed datasets (CSV format)
 ├── plots/          # Example output figures
 ├── docs/           # Workflow documentation and analysis vignette
-└── results/        # Placeholder for full outputs (not tracked in Git)
+└── results/        # Placeholder for full outputs
 ```
 
 ---
