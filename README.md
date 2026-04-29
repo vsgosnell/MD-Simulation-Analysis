@@ -11,7 +11,7 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 ## Analyses Included
 
 ### Simulation Workflow (GROMACS)
-- Structure preparation and topology generation (CHARMM → GROMACS conversion
+- Structure preparation and topology generation (CHARMM → GROMACS conversion)
 - Energy minimization  
 - Equilibration (NVT/NPT)  
 - Molecular dynamics production run  
