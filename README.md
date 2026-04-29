@@ -32,7 +32,6 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 ---
 
 ## Repository Structure
-## Repository Structure
 
 ```
 .
