@@ -36,56 +36,16 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 
 ```
 scripts/
-├── simulation/
-│   ├── minimization_equilibration.sh
-│   ├── production_run1.sh
-│   └── production_run2.sh
-│
-├── post_processing/
-│   ├── combine_trajectories.sh
-│   └── extract_average_frame.sh
-│
-└── analysis/
-    ├── convert_xvg_to_csv.R
-    ├── plot_rmsd.R
-    ├── plot_rmsf.R
-    ├── plot_rg.R
-    ├── plot_hbonds.R
-    └── run_analysis.R
-data/ 
-    ├── hbonds.csv
-    ├── rg_receptor.csv
-    ├── rg_vaccine.csv
-    ├── rmsd.csv
-    ├── rmsf_receptor.csv
-    ├── rmsf_vaccine.csv
-    └── rmsd.xvg 
-plots/
-    ├── hbond_example_plot.png
-    ├── hbonds_complexes.png
-    ├── rg.png
-    ├── rg_example_plot.png
-    ├── rmsd_complexes.png
-    ├── rmsd_example_plot.png
-    ├── rmsf.png
-    └── rmsf_example_plot.png
-    ├── comparison
-        └── md_vs_docked.png
-    └── electrostatics
-        ├── color_ramp.png
-        ├── md_complex_interface.png
-        ├── md_complex_structure.png
-        ├── receptor_surface.png
-        └── vaccine_surface.png
-├── docs/
-    ├── md_analysis_vignette.Rmd
-    ├── md_analysis_vignette.html
-    └── protocol.md
-├── environment.yml
-├── .gitignore
-├── CITATION.cff
-├── README.md      
-└── run_all.sh        
+  simulation/         # GROMACS simulation workflows
+  post_processing/    # trajectory processing & structure extraction
+  analysis/           # R scripts for analysis and plotting
+
+data/                 # Example processed datasets
+plots/                # Example output figures
+docs/                 # Detailed workflow & vignette
+
+run_all.sh            # SLURM pipeline script
+environment.yml       # Conda environment
 ```
 
 ---
