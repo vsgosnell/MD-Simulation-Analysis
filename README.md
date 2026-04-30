@@ -37,7 +37,7 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 ```
 scripts/
   simulation/         # GROMACS simulation workflows
-  post_processing/    # trajectory processing & structure extraction
+  post_processing/    # Trajectory processing & structure extraction
   analysis/           # R scripts for analysis and plotting
 
 data/                 # Example processed datasets
