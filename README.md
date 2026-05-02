@@ -8,6 +8,12 @@ The workflow emphasizes modularity and reproducibility, enabling users to apply 
 
 ---
 
+**Live workflow vignette:**  
+https://vsgosnell.github.io/MD-Simulation-Analysis/
+
+
+---
+
 ## Analyses Included
 
 ### Simulation Workflow (GROMACS)
@@ -149,11 +155,9 @@ source("scripts/analysis/convert_xvg_to_csv.R")
 
 ## Documentation
 
-Detailed step-by-step instructions for the full workflow, including `GROMACS` post-processing commands and analysis procedures, are provided in:
+Detailed step-by-step instructions for the full workflow, including `GROMACS` post-processing commands and analysis procedures, are provided at:
 
-```r
-docs/md_analysis_vignette.html
-```
+[(https://vsgosnell.github.io/MD-Simulation-Analysis/)](https://vsgosnell.github.io/MD-Simulation-Analysis/)]](https://vsgosnell.github.io/MD-Simulation-Analysis/)
 
 ---
 
