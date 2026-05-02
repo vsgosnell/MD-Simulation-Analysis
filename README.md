@@ -157,7 +157,7 @@ source("scripts/analysis/convert_xvg_to_csv.R")
 
 Detailed step-by-step instructions for the full workflow, including `GROMACS` post-processing commands and analysis procedures, are provided at:
 
-[(https://vsgosnell.github.io/MD-Simulation-Analysis/)](https://vsgosnell.github.io/MD-Simulation-Analysis/)]](https://vsgosnell.github.io/MD-Simulation-Analysis/)
+https://vsgosnell.github.io/MD-Simulation-Analysis/
 
 ---
 
