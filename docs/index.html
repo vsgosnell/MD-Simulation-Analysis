@@ -376,21 +376,27 @@ Commands</a></li>
 Command</a></li>
 <li><a href="#output-plot" id="toc-output-plot">Output Plot</a></li>
 </ul></li>
+<li><a href="#component-specific-analysis-separating-receptor-and-vaccine-groups" id="toc-component-specific-analysis-separating-receptor-and-vaccine-groups">Component-Specific
+Analysis: Separating Receptor and Vaccine Groups</a>
+<ul>
+<li><a href="#create-receptor-and-vaccine-index-groups" id="toc-create-receptor-and-vaccine-index-groups">Create Receptor and
+Vaccine Index Groups</a></li>
+</ul></li>
 <li><a href="#rmsf-analysis" id="toc-rmsf-analysis">RMSF Analysis</a>
 <ul>
-<li><a href="#gromacs-command-1" id="toc-gromacs-command-1">GROMACS
-Command</a></li>
+<li><a href="#gromacs-commands-1" id="toc-gromacs-commands-1">GROMACS
+Commands</a></li>
 <li><a href="#output-plot-1" id="toc-output-plot-1">Output Plot</a></li>
 </ul></li>
 <li><a href="#radius-of-gyration-analysis" id="toc-radius-of-gyration-analysis">Radius of Gyration Analysis</a>
 <ul>
-<li><a href="#gromacs-command-2" id="toc-gromacs-command-2">GROMACS
-Command</a></li>
+<li><a href="#gromacs-commands-2" id="toc-gromacs-commands-2">GROMACS
+Commands</a></li>
 <li><a href="#output-plot-2" id="toc-output-plot-2">Output Plot</a></li>
 </ul></li>
 <li><a href="#hydrogen-bond-analysis" id="toc-hydrogen-bond-analysis">Hydrogen Bond Analysis</a>
 <ul>
-<li><a href="#gromacs-command-3" id="toc-gromacs-command-3">GROMACS
+<li><a href="#gromacs-command-1" id="toc-gromacs-command-1">GROMACS
 Command</a></li>
 <li><a href="#output-plot-3" id="toc-output-plot-3">Output Plot</a></li>
 </ul></li>
@@ -399,7 +405,7 @@ Extraction</a>
 <ul>
 <li><a href="#workflow-summary-1" id="toc-workflow-summary-1">Workflow
 Summary</a></li>
-<li><a href="#gromacs-commands-1" id="toc-gromacs-commands-1">GROMACS
+<li><a href="#gromacs-commands-3" id="toc-gromacs-commands-3">GROMACS
 Commands</a></li>
 <li><a href="#output-files-1" id="toc-output-files-1">Output
 Files</a></li>
@@ -553,6 +559,40 @@ vaccine-receptor complex over time.</em></p>
 <hr />
 </div>
 </div>
+<div id="component-specific-analysis-separating-receptor-and-vaccine-groups" class="section level1">
+<h1>Component-Specific Analysis: Separating Receptor and Vaccine
+Groups</h1>
+<p>For RMSF and radius of gyration analyses, the receptor and vaccine
+components were separated into distinct index groups. This is important
+because the receptor and vaccine may differ substantially in size,
+residue numbering, flexibility, and structural compactness.</p>
+<p>Analyzing the full complex alone can obscure component-specific
+behavior. For example, high flexibility in the vaccine construct may be
+masked by the larger receptor, while receptor compactness may dominate
+the radius of gyration profile of the full complex. Separating the
+components allows RMSF and Rg to be interpreted independently for each
+molecular partner.</p>
+<p>Residue ranges were first confirmed in PyMOL by inspecting the
+receptor and vaccine sequences. These residue ranges were then used to
+create separate GROMACS index groups.</p>
+<div id="create-receptor-and-vaccine-index-groups" class="section level2">
+<h2>Create Receptor and Vaccine Index Groups</h2>
+<pre class="bash"><code>gmx make_ndx -f step5_production.tpr -n index.ndx -o index_separated.ndx</code></pre>
+<p>Within the interactive GROMACS prompt, enter <code>l</code> to list
+available residue and atom groups, then define the receptor and vaccine
+groups by residue index:</p>
+<pre class="text"><code>l
+ri 1-279
+name 16 Receptor
+ri 280-387
+name 17 Vaccine
+q</code></pre>
+<p>The residue ranges shown here are system-specific and should be
+adjusted according to the receptor and vaccine residue numbering in each
+complex.</p>
+<hr />
+</div>
+</div>
 <div id="rmsf-analysis" class="section level1">
 <h1>RMSF Analysis</h1>
 <p>Root Mean Square Fluctuation (RMSF) was used to evaluate
@@ -562,9 +602,22 @@ atomic displacement over time.</p>
 <p>Higher RMSF values typically correspond to flexible loops, termini,
 or exposed regions, while lower RMSF values suggest more stable or
 structurally constrained residues.</p>
-<div id="gromacs-command-1" class="section level2">
-<h2>GROMACS Command</h2>
-<pre class="bash"><code>gmx rmsf -s step5_production.tpr -f step-all.xtc -o rmsf.xvg -res -n index.ndx</code></pre>
+<div id="gromacs-commands-1" class="section level2">
+<h2>GROMACS Commands</h2>
+<p>Calculate RMSF for the vaccine component:</p>
+<pre class="bash"><code>echo &quot;Vaccine&quot; | gmx rmsf \
+  -s step5_production.tpr \
+  -f step-all.xtc \
+  -o rmsf_vaccine.xvg \
+  -res \
+  -n index_separated.ndx</code></pre>
+<p>Calculate RMSF for the receptor component:</p>
+<pre class="bash"><code>echo &quot;Receptor&quot; | gmx rmsf \
+  -s step5_production.tpr \
+  -f step-all.xtc \
+  -o rmsf_receptor.xvg \
+  -res \
+  -n index_separated.ndx</code></pre>
 </div>
 <div id="output-plot-1" class="section level2">
 <h2>Output Plot</h2>
@@ -583,9 +636,20 @@ atoms around the center of mass of the molecule.</p>
 <p>Stable Rg values suggest that the system maintains compactness during
 simulation, while increasing Rg values may indicate unfolding,
 expansion, or loosening of the complex.</p>
-<div id="gromacs-command-2" class="section level2">
-<h2>GROMACS Command</h2>
-<pre class="bash"><code>gmx gyrate -f out.xtc -s step5_production.tpr -n index.ndx -o radius_of_gyration.xvg</code></pre>
+<div id="gromacs-commands-2" class="section level2">
+<h2>GROMACS Commands</h2>
+<p>Calculate radius of gyration for the vaccine component:</p>
+<pre class="bash"><code>echo &quot;Vaccine&quot; | gmx gyrate \
+  -f step-all.xtc \
+  -s step5_production.tpr \
+  -n index_separated.ndx \
+  -o rg_vaccine.xvg</code></pre>
+<p>Calculate radius of gyration for the receptor component:</p>
+<pre class="bash"><code>echo &quot;Receptor&quot; | gmx gyrate \
+  -f step-all.xtc \
+  -s step5_production.tpr \
+  -n index_separated.ndx \
+  -o rg_receptor.xvg</code></pre>
 </div>
 <div id="output-plot-2" class="section level2">
 <h2>Output Plot</h2>
@@ -605,7 +669,7 @@ structural integrity and interaction persistence over time.</p>
 <p>A relatively stable hydrogen bond profile may indicate sustained
 internal interactions, while large fluctuations may reflect
 conformational rearrangement or transient interaction changes.</p>
-<div id="gromacs-command-3" class="section level2">
+<div id="gromacs-command-1" class="section level2">
 <h2>GROMACS Command</h2>
 <pre class="bash"><code>gmx hbond -f out.xtc -s step5_production.tpr -n index.ndx -num hbnum.xvg -g hbond.log -hbn hbond.ndx -hbm hbmap.xpm</code></pre>
 </div>
@@ -642,7 +706,7 @@ trajectory.</li>
 correction, which prepare the trajectory for accurate clustering and
 structural alignment.</p>
 </div>
-<div id="gromacs-commands-1" class="section level2">
+<div id="gromacs-commands-3" class="section level2">
 <h2>GROMACS Commands</h2>
 <p>Fit the combined trajectory:</p>
 <pre class="bash"><code>gmx trjconv -s step5_production.tpr -f step-all.xtc -o fitted.xtc -fit rot+trans</code></pre>

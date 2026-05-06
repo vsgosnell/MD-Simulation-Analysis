@@ -153,16 +153,67 @@ knitr::include_graphics(file.path(plot_dir, "rmsd_example_plot.png"))
 
 ---
 
+
+# Component-Specific Analysis: Separating Receptor and Vaccine Groups
+
+For RMSF and radius of gyration analyses, the receptor and vaccine components were separated into distinct index groups. This is important because the receptor and vaccine may differ substantially in size, residue numbering, flexibility, and structural compactness.
+
+Analyzing the full complex alone can obscure component-specific behavior. For example, high flexibility in the vaccine construct may be masked by the larger receptor, while receptor compactness may dominate the radius of gyration profile of the full complex. Separating the components allows RMSF and Rg to be interpreted independently for each molecular partner.
+
+Residue ranges were first confirmed in PyMOL by inspecting the receptor and vaccine sequences. These residue ranges were then used to create separate GROMACS index groups.
+
+## Create Receptor and Vaccine Index Groups
+
+```bash
+gmx make_ndx -f step5_production.tpr -n index.ndx -o index_separated.ndx
+```
+
+Within the interactive GROMACS prompt, enter `l` to list available residue and atom groups, then define the receptor and vaccine groups by residue index:
+
+```text
+l
+ri 1-279
+name 16 Receptor
+ri 280-387
+name 17 Vaccine
+q
+```
+
+The residue ranges shown here are system-specific and should be adjusted according to the receptor and vaccine residue numbering in each complex.
+
+
+---
+
+
+
 # RMSF Analysis
 
 Root Mean Square Fluctuation (RMSF) was used to evaluate residue-level flexibility throughout the MD simulation. RMSF identifies regions of the protein or vaccine construct that exhibit increased atomic displacement over time.
 
 Higher RMSF values typically correspond to flexible loops, termini, or exposed regions, while lower RMSF values suggest more stable or structurally constrained residues.
 
-## GROMACS Command
+## GROMACS Commands
+
+Calculate RMSF for the vaccine component:
 
 ```bash
-gmx rmsf -s step5_production.tpr -f step-all.xtc -o rmsf.xvg -res -n index.ndx
+echo "Vaccine" | gmx rmsf \
+  -s step5_production.tpr \
+  -f step-all.xtc \
+  -o rmsf_vaccine.xvg \
+  -res \
+  -n index_separated.ndx
+```
+
+Calculate RMSF for the receptor component:
+
+```bash
+echo "Receptor" | gmx rmsf \
+  -s step5_production.tpr \
+  -f step-all.xtc \
+  -o rmsf_receptor.xvg \
+  -res \
+  -n index_separated.ndx
 ```
 
 ## Output Plot
@@ -181,10 +232,26 @@ Radius of Gyration (Rg) was used to assess the compactness of the vaccine-recept
 
 Stable Rg values suggest that the system maintains compactness during simulation, while increasing Rg values may indicate unfolding, expansion, or loosening of the complex.
 
-## GROMACS Command
+## GROMACS Commands
+
+Calculate radius of gyration for the vaccine component:
 
 ```bash
-gmx gyrate -f out.xtc -s step5_production.tpr -n index.ndx -o radius_of_gyration.xvg
+echo "Vaccine" | gmx gyrate \
+  -f step-all.xtc \
+  -s step5_production.tpr \
+  -n index_separated.ndx \
+  -o rg_vaccine.xvg
+```
+
+Calculate radius of gyration for the receptor component:
+
+```bash
+echo "Receptor" | gmx gyrate \
+  -f step-all.xtc \
+  -s step5_production.tpr \
+  -n index_separated.ndx \
+  -o rg_receptor.xvg
 ```
 
 ## Output Plot
