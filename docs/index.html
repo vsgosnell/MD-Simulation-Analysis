@@ -437,10 +437,12 @@ Representation</a></li>
 </ul></li>
 <li><a href="#output-1" id="toc-output-1">Output</a></li>
 </ul></li>
-<li><a href="#notes" id="toc-notes">Notes</a></li>
-<li><a href="#conclusion" id="toc-conclusion">Conclusion</a>
+<li><a href="#notes" id="toc-notes">Notes</a>
 <ul>
-<li><a href="#reproducibility" id="toc-reproducibility">Reproducibility</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+<li><a href="#conclusion-1" id="toc-conclusion-1">Conclusion</a></li>
+<li><a href="#reproducibility-and-extensibility" id="toc-reproducibility-and-extensibility">Reproducibility and
+Extensibility</a></li>
 <li><a href="#future-directions" id="toc-future-directions">Future
 Directions</a></li>
 <li><a href="#availability" id="toc-availability">Availability</a></li>
@@ -897,57 +899,72 @@ publication-quality figures.</p>
 <li>Group indices in GROMACS may vary depending on the system</li>
 </ul>
 <hr />
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
 </div>
-<div id="conclusion" class="section level1">
-<h1>Conclusion</h1>
-<p>This workflow provides a reproducible pipeline for the analysis and
-visualization of molecular dynamics simulations of vaccine–receptor
-complexes. Starting from raw trajectory data, the pipeline integrates
-trajectory processing, structural stability analysis, representative
-structure extraction, and advanced visualization techniques.</p>
-<p>The combined use of <code>RMSD</code>, <code>RMSF</code>,
-<code>radius of gyration</code>, and <code>hydrogen bonding</code>
-analyses enables comprehensive evaluation of system stability,
-flexibility, and interaction persistence throughout the simulation.
-Representative structure extraction further allows for detailed
-structural interpretation and downstream applications such as
-electrostatic surface analysis.</p>
-<p>Comparison between initial docking models and MD-refined structures
-highlights conformational adjustments and interface refinement,
-providing additional insight into the stability and realism of predicted
-binding interactions.</p>
-<p>Finally, electrostatic surface visualization using APBS and PyMOL
-offers a complementary perspective on charge distribution and potential
-interaction hotspots at the molecular interface.</p>
-<p>Together, these approaches establish a robust framework for
-evaluating and interpreting MD simulations in the context of
-structure-based vaccine design and protein–protein interaction
-studies.</p>
+<div id="conclusion-1" class="section level2">
+<h2>Conclusion</h2>
+<p>Presented here is a reproducible and modular workflow for the
+analysis and visualization of molecular dynamics simulations of
+vaccine–receptor complexes. Beginning with raw trajectory data, the
+pipeline integrates trajectory processing, quantitative stability
+metrics, representative structure extraction, and structure-based
+visualization into a unified framework.</p>
+<p>System stability and conformational behavior are evaluated using
+complementary metrics, including <strong>root mean square
+deviation</strong> <code>(RMSD)</code>, <strong>root mean square
+fluctuation</strong> <code>(RMSF)</code>, and <strong>radius of
+gyration</strong> <code>(Rg)</code>, alongside <strong>hydrogen bonding
+analysis</strong> <code>(hbond)</code> to characterize interaction
+persistence. Together, these measures provide a multidimensional
+assessment of structural integrity, flexibility, and intermolecular
+stability throughout the simulation.</p>
+<p>Extraction of a representative structure via clustering enables
+downstream structural interpretation and facilitates direct comparison
+between initial docking models and MD-refined conformations. This
+comparison reveals interface-level adjustments and conformational
+refinement, offering insight into the stability and plausibility of
+predicted binding modes.</p>
+<p>Electrostatic surface potential calculations, performed using
+<strong>APBS</strong> and visualized in <strong>PyMOL</strong>, further
+extend the analysis by <u>mapping charge distributions</u> and
+identifying potential <em>interaction hotspots</em> at the molecular
+interface.</p>
+<p>Collectively, this workflow establishes a robust and extensible
+platform for the interpretation of MD simulations in the context of
+<strong>structure-based vaccine design</strong> and
+<strong>protein–protein interaction analysis</strong>.</p>
 <hr />
-<div id="reproducibility" class="section level2">
-<h2>Reproducibility</h2>
+</div>
+<div id="reproducibility-and-extensibility" class="section level2">
+<h2>Reproducibility and Extensibility</h2>
 <p>All scripts, example datasets, and visualization workflows are
-provided within this repository. The pipeline is modular and can be
-adapted to other molecular systems generated using GROMACS.</p>
+provided within this repository. The pipeline is designed to be modular,
+enabling straightforward adaptation to alternative molecular systems
+generated using <strong>GROMACS</strong>.</p>
 <hr />
 </div>
 <div id="future-directions" class="section level2">
 <h2>Future Directions</h2>
-<p>This workflow can be extended to include:</p>
+<p>This framework can be extended to incorporate additional analyses,
+including:</p>
 <ul>
-<li>Binding free energy calculations (MM/PBSA or MM/GBSA)</li>
-<li>Principal component analysis (PCA) of conformational dynamics</li>
-<li>Interaction network analysis and contact mapping</li>
-<li>Comparative analysis across multiple complexes or simulation
+<li>Binding free energy calculations (<strong>MM/PBSA</strong>,
+<strong>MM/GBSA</strong>)</li>
+<li>Principal component analysis (<strong>PCA</strong>) of
+conformational dynamics</li>
+<li>Residue-level interaction network and contact analysis</li>
+<li>Comparative evaluation across multiple complexes or simulation
 replicates</li>
 </ul>
 <hr />
 </div>
 <div id="availability" class="section level2">
 <h2>Availability</h2>
-<p>The full workflow, including scripts and documentation, is available
-at:</p>
+<p>The complete workflow, including documentation and interactive
+visualization, is available at:</p>
 <p><a href="https://vsgosnell.github.io/MD-Simulation-Analysis/" class="uri">https://vsgosnell.github.io/MD-Simulation-Analysis/</a></p>
+<hr />
 </div>
 </div>
 
