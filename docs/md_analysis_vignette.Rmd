@@ -594,39 +594,45 @@ Multiple orientations (e.g., 180° rotations) are recommended for publication-qu
 
 ---
 
-# Conclusion
+## Conclusion
 
-This workflow provides a reproducible pipeline for the analysis and visualization of molecular dynamics simulations of vaccine–receptor complexes. Starting from raw trajectory data, the pipeline integrates trajectory processing, structural stability analysis, representative structure extraction, and advanced visualization techniques.
+## Conclusion
 
-The combined use of `RMSD`, `RMSF`, `radius of gyration`, and `hydrogen bonding` analyses enables comprehensive evaluation of system stability, flexibility, and interaction persistence throughout the simulation. Representative structure extraction further allows for detailed structural interpretation and downstream applications such as electrostatic surface analysis.
+Presented here is a reproducible and modular workflow for the analysis and visualization of molecular dynamics simulations of vaccine–receptor complexes. Beginning with raw trajectory data, the pipeline integrates trajectory processing, quantitative stability metrics, representative structure extraction, and structure-based visualization into a unified framework.
 
-Comparison between initial docking models and MD-refined structures highlights conformational adjustments and interface refinement, providing additional insight into the stability and realism of predicted binding interactions.
+System stability and conformational behavior are evaluated using complementary metrics, including **root mean square deviation** `(RMSD)`, **root mean square fluctuation** `(RMSF)`, and **radius of gyration** `(Rg)`, alongside **hydrogen bonding analysis** `(hbond)` to characterize interaction persistence. Together, these measures provide a multidimensional assessment of structural integrity, flexibility, and intermolecular stability throughout the simulation.
 
-Finally, electrostatic surface visualization using APBS and PyMOL offers a complementary perspective on charge distribution and potential interaction hotspots at the molecular interface.
+Extraction of a representative structure via clustering enables downstream structural interpretation and facilitates direct comparison between initial docking models and MD-refined conformations. This comparison reveals interface-level adjustments and conformational refinement, offering insight into the stability and plausibility of predicted binding modes.
 
-Together, these approaches establish a robust framework for evaluating and interpreting MD simulations in the context of structure-based vaccine design and protein–protein interaction studies.
+Electrostatic surface potential calculations, performed using **APBS** and visualized in **PyMOL**, further extend the analysis by <u>mapping charge distributions</u> and identifying potential *interaction hotspots* at the molecular interface.
+
+Collectively, this workflow establishes a robust and extensible platform for the interpretation of MD simulations in the context of **structure-based vaccine design** and **protein–protein interaction analysis**.
 
 ---
 
-## Reproducibility
+## Reproducibility and Extensibility
 
-All scripts, example datasets, and visualization workflows are provided within this repository. The pipeline is modular and can be adapted to other molecular systems generated using GROMACS.
+All scripts, example datasets, and visualization workflows are provided within this repository. The pipeline is designed to be modular, enabling straightforward adaptation to alternative molecular systems generated using **GROMACS**.
 
 ---
 
 ## Future Directions
 
-This workflow can be extended to include:
+This framework can be extended to incorporate additional analyses, including:
 
-- Binding free energy calculations (MM/PBSA or MM/GBSA)
-- Principal component analysis (PCA) of conformational dynamics
-- Interaction network analysis and contact mapping
-- Comparative analysis across multiple complexes or simulation replicates
+- Binding free energy calculations (**MM/PBSA**, **MM/GBSA**)
+- Principal component analysis (**PCA**) of conformational dynamics
+- Residue-level interaction network and contact analysis
+- Comparative evaluation across multiple complexes or simulation replicates
 
 ---
 
 ## Availability
 
-The full workflow, including scripts and documentation, is available at:
+The complete workflow, including documentation and interactive visualization, is available at:
 
 https://vsgosnell.github.io/MD-Simulation-Analysis/
+
+
+---
+
