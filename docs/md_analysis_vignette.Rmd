@@ -123,33 +123,89 @@ gmx trjconv -f step-all.xtc -s step5_production.tpr -n index.ndx \
 
 # RMSD Analysis
 
+Root Mean Square Deviation (RMSD) was used to evaluate the overall structural stability of the simulated complex over time. RMSD measures the average positional deviation of selected atoms relative to a reference structure.
+
+Lower and plateauing RMSD values generally suggest that the system has reached structural stability, while large or continuously increasing RMSD values may indicate conformational instability or major structural rearrangement.
+
+## GROMACS Command
+
+```bash
+gmx rms -f out.xtc -s step5_production.tpr -n index.ndx -o rmsd.xvg -tu ns
+```
+
+## Output Plot
+
 ```{r rmsd-plot, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "rmsd_example_plot.png"))
 ```
+
+*Figure: RMSD profile showing structural deviation of the simulated complex over time.*
 
 ---
 
 # RMSF Analysis
 
+Root Mean Square Fluctuation (RMSF) was used to evaluate residue-level flexibility throughout the MD simulation. RMSF identifies regions of the protein or vaccine construct that exhibit increased atomic displacement over time.
+
+Higher RMSF values typically correspond to flexible loops, termini, or exposed regions, while lower RMSF values suggest more stable or structurally constrained residues.
+
+## GROMACS Command
+
+```bash
+gmx rmsf -s step5_production.tpr -f step-all.xtc -o rmsf.xvg -res -n index.ndx
+```
+
+## Output Plot
+
 ```{r rmsf-plot, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "rmsf_example_plot.png"))
 ```
+
+*Figure: Per-residue RMSF profile showing local flexibility across the simulated structure.*
 
 ---
 
 # Radius of Gyration Analysis
 
+Radius of Gyration (Rg) was used to assess the compactness of the simulated complex over time. Rg measures the distribution of atoms around the center of mass of the molecule.
+
+Stable Rg values suggest that the system maintains compactness during simulation, while increasing Rg values may indicate unfolding, expansion, or loosening of the complex.
+
+## GROMACS Command
+
+```bash
+gmx gyrate -f out.xtc -s step5_production.tpr -n index.ndx -o radius_of_gyration.xvg
+```
+
+## Output Plot
+
 ```{r rg-plot, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "rg_example_plot.png"))
 ```
+
+*Figure: Radius of gyration profile showing changes in structural compactness over time.*
 
 ---
 
 # Hydrogen Bond Analysis
 
+Hydrogen bond analysis was used to evaluate intramolecular interaction stability during the MD simulation. The number of hydrogen bonds provides insight into structural integrity and interaction persistence over time.
+
+A relatively stable hydrogen bond profile may indicate sustained internal interactions, while large fluctuations may reflect conformational rearrangement or transient interaction changes.
+
+## GROMACS Command
+
+```bash
+gmx hbond -f out.xtc -s step5_production.tpr -n index.ndx -num hbnum.xvg -g hbond.log -hbn hbond.ndx -hbm hbmap.xpm
+```
+
+## Output Plot
+
 ```{r hbonds-plot, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "hbond_example_plot.png"))
 ```
+
+*Figure: Hydrogen bond profile showing changes in intramolecular hydrogen bonding between the vaccine and receptor throughout the simulation.*
 
 ---
 
