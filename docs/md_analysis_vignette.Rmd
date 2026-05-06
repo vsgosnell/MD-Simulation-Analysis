@@ -123,7 +123,7 @@ gmx trjconv -f step-all.xtc -s step5_production.tpr -n index.ndx \
 
 # RMSD Analysis
 
-Root Mean Square Deviation (RMSD) was used to evaluate the overall structural stability of the simulated complex over time. RMSD measures the average positional deviation of selected atoms relative to a reference structure.
+Root Mean Square Deviation (RMSD) was used to evaluate the overall structural stability of the vaccine-receptor complex over time. RMSD measures the average positional deviation of selected atoms relative to a reference structure.
 
 Lower and plateauing RMSD values generally suggest that the system has reached structural stability, while large or continuously increasing RMSD values may indicate conformational instability or major structural rearrangement.
 
@@ -139,7 +139,7 @@ gmx rms -f out.xtc -s step5_production.tpr -n index.ndx -o rmsd.xvg -tu ns
 knitr::include_graphics(file.path(plot_dir, "rmsd_example_plot.png"))
 ```
 
-*Figure: RMSD profile showing structural deviation of the simulated complex over time.*
+*Figure: RMSD profile showing structural deviation of the vaccine-receptor complex over time.*
 
 ---
 
@@ -161,13 +161,13 @@ gmx rmsf -s step5_production.tpr -f step-all.xtc -o rmsf.xvg -res -n index.ndx
 knitr::include_graphics(file.path(plot_dir, "rmsf_example_plot.png"))
 ```
 
-*Figure: Per-residue RMSF profile showing local flexibility across the simulated structure.*
+*Figure: Per-residue RMSF profile showing local flexibility across the separated components of the vaccine-receptor complex in order to analyze them individually.*
 
 ---
 
 # Radius of Gyration Analysis
 
-Radius of Gyration (Rg) was used to assess the compactness of the simulated complex over time. Rg measures the distribution of atoms around the center of mass of the molecule.
+Radius of Gyration (Rg) was used to assess the compactness of the vaccine-receptor complex over time. Rg measures the distribution of atoms around the center of mass of the molecule.
 
 Stable Rg values suggest that the system maintains compactness during simulation, while increasing Rg values may indicate unfolding, expansion, or loosening of the complex.
 
@@ -183,13 +183,13 @@ gmx gyrate -f out.xtc -s step5_production.tpr -n index.ndx -o radius_of_gyration
 knitr::include_graphics(file.path(plot_dir, "rg_example_plot.png"))
 ```
 
-*Figure: Radius of gyration profile showing changes in structural compactness over time.*
+*Figure: Radius of gyration profile showing changes in structural compactness of the separated vaccine-receptor complex components over time.* 
 
 ---
 
 # Hydrogen Bond Analysis
 
-Hydrogen bond analysis was used to evaluate intramolecular interaction stability during the MD simulation. The number of hydrogen bonds provides insight into structural integrity and interaction persistence over time.
+Hydrogen bond analysis was used to evaluate intramolecular interaction stability between the vaccine and receptor components during the MD simulation. The number of hydrogen bonds provides insight into structural integrity and interaction persistence over time.
 
 A relatively stable hydrogen bond profile may indicate sustained internal interactions, while large fluctuations may reflect conformational rearrangement or transient interaction changes.
 
@@ -220,19 +220,15 @@ knitr::include_graphics(file.path(plot_dir, "hbond_example_plot.png"))
 
 Representative structures were extracted from the processed MD trajectory using GROMACS. This step fits the trajectory, performs clustering, and extracts a central representative structure for downstream visualization and electrostatic surface analysis.
 
-The extraction workflow is provided in:
-
-```bash
-scripts/post_processing/extract_average_frame.sh
-```
-
-## Run Representative Structure Extraction
+---
 
 From the repository root:
 
 ```bash
 bash scripts/post_processing/extract_average_frame.sh
 ```
+
+---
 
 ## Workflow Summary
 
@@ -241,6 +237,10 @@ The script performs the following steps:
 1. Fits the trajectory using rotational and translational alignment.
 2. Clusters the fitted trajectory using the GROMOS method.
 3. Extracts a representative central structure from the clustered trajectory.
+
+
+Note: This step is performed after trajectory combination and PBC correction, which prepare the trajectory for accurate clustering and structural alignment. 
+
 
 ## GROMACS Commands
 
@@ -314,6 +314,28 @@ super md, docking
 
 ---
 
+
+## Visualization
+
+Overlay both structures:
+
+```python
+show cartoon, docking
+color purple, docking
+
+show cartoon, md
+color blue, md
+```
+
+```{r md-vs-docked-plot, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "comparison/docking_vs_md.png"))
+```
+
+*Figure: Overlay of the initial docked complex (TLR4/MD2 and the vaccine) and representative MD-refined structure, with labels for clarification.* 
+
+---
+
+
 ## RMSD Evaluation
 
 PyMOL reports RMSD after alignment:
@@ -324,43 +346,6 @@ rms_cur md, docking
 
 Lower RMSD values indicate structural stability, while higher values suggest conformational rearrangement during simulation.
 
----
-
-## Visualization
-
-Overlay both structures:
-
-```python
-show cartoon, docking
-color gray, docking
-
-show cartoon, md
-color cyan, md
-```
-
-Adjust transparency for comparison:
-
-```python
-set cartoon_transparency, 0.5, docking
-```
-
----
-
-## Interface Comparison
-
-Highlight interface residues:
-
-```python
-select interface_md, byres (md within 4 of docking)
-show sticks, interface_md
-color orange, interface_md
-```
-
-```{r md-vs-docked-plot, echo=FALSE, out.width="85%", fig.align="center"}
-knitr::include_graphics(file.path(plot_dir, "comparison/md_vs_docked.png"))
-```
-
-*Figure: Overlay of the initial docked complex and representative MD-refined structure.*
 
 ---
 
@@ -377,7 +362,42 @@ knitr::include_graphics(file.path(plot_dir, "comparison/md_vs_docked.png"))
 
 Structural deviations should be interpreted alongside RMSD, RMSF, and hydrogen bonding analyses to determine whether changes are stabilizing or destabilizing.
 
+
 ---
+
+
+## Interface Visualization
+
+Define vaccine and receptor components (manual renaming may be required depending on chain assignments):
+
+```python
+# Rename selections appropriately in PyMOL
+# Example:
+# rename complex → receptor
+# rename chain(s) → vaccine
+```
+
+---
+
+Highlight interface residues:
+
+```python
+select interface_sel, byres ((vaccine within 4 of receptor) or (receptor within 4 of vaccine))
+create interface, interface_sel
+
+show surface, interface
+
+color blue, interface and (interface like receptor)
+color green, interface and (interface like vaccine)
+```
+
+```{r electrostatics-interface, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_interface.png"))
+```
+
+
+---
+
 
 ## Output
 
@@ -483,9 +503,14 @@ This generates an electrostatic potential map (`.dx` file).
 
 Load the structure and electrostatic map:
 
+*Note: It will again be necessary to separate receptor and vaccine chains/sequences, either manually or using CLI*
+
 ```python
 load complex_md.pqr, complex
 load complex_md.dx, complex_map
+
+color splitpea, vaccine
+color lightblue, receptor
 ```
 
 ```{r electrostatics-load-structure, echo=FALSE, out.width="85%", fig.align="center"}
@@ -501,31 +526,6 @@ ramp_new complex_pot, complex_map, [-15, 0, 15]
 
 ```{r electrostatics-color-ramp, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "electrostatics/color_ramp.png"))
-```
-
----
-
-## Interface Visualization
-
-Define vaccine and receptor components (manual renaming may be required depending on chain assignments):
-
-```python
-# Rename selections appropriately in PyMOL
-# Example:
-# rename complex → receptor
-# rename chain(s) → vaccine
-```
-
-Highlight interface residues:
-
-```python
-select interface, byres (vaccine within 4 of receptor)
-show sticks, interface
-color orange, interface
-```
-
-```{r electrostatics-interface, echo=FALSE, out.width="85%", fig.align="center"}
-knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_interface.png"))
 ```
 
 ---
@@ -549,27 +549,20 @@ knitr::include_graphics(file.path(plot_dir, "electrostatics/vaccine_surface.png"
 ### Receptor Electrostatic Representation
 
 ```python
-show cartoon, receptor
-color lightblue, receptor
-set cartoon_transparency, 0.80, receptor
-```
+hide surface, vaccine
+show cartoon, vaccine
+set transparency, 0, vaccine
+
+set surface_color, complex_pot, receptor
+show surface, receptor
+set transparency, 0.15, receptor
+set surface_quality, 1
+set two_sided_lighting, on```
 
 ```{r electrostatics-receptor-cartoon, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "electrostatics/receptor_surface.png"))
 ```
 
----
-
-## Alternative View (Receptor Surface)
-
-```python
-set surface_color, complex_pot, receptor
-show surface, receptor
-set transparency, 0.15, receptor
-hide surface, vaccine
-show cartoon, vaccine
-set cartoon_transparency, 0.80, vaccine
-```
 
 ---
 
