@@ -14,9 +14,9 @@ This vignette demonstrates the analysis workflow used to process and visualize M
 The workflow includes:
 
 - Trajectory Combination and Processing
-- Root Mean Square Deviation (RMSD) analysis
-- Root Mean Square Fluctuation (RMSF) analysis
-- Radius of Gyration (Rg) analysis
+- Root Mean Square Deviation `(RMSD)` analysis
+- Root Mean Square Fluctuation `(RMSF)` analysis
+- Radius of Gyration `(Rg)` analysis
 - Hydrogen Bond analysis
 - Representative Structure Extraction
 - Comparison of Docking and MD-Refined Structures
@@ -133,9 +133,9 @@ gmx trjconv -f step-all.xtc -s step5_production.tpr -n index.ndx \
 
 # RMSD Analysis
 
-Root Mean Square Deviation (RMSD) was used to evaluate the overall structural stability of the vaccine-receptor complex over time. RMSD measures the average positional deviation of selected atoms relative to a reference structure.
+Root Mean Square Deviation `(RMSD)` was used to evaluate the overall structural stability of the vaccine-receptor complex over time. RMSD measures the average positional deviation of selected atoms relative to a reference structure.
 
-Lower and plateauing RMSD values generally suggest that the system has reached structural stability, while large or continuously increasing RMSD values may indicate conformational instability or major structural rearrangement.
+Lower and plateauing `RMSD` values generally suggest that the system has reached structural stability, while large or continuously increasing `RMSD` values may indicate conformational instability or major structural rearrangement.
 
 ## GROMACS Command
 
@@ -156,11 +156,11 @@ knitr::include_graphics(file.path(plot_dir, "rmsd_example_plot.png"))
 
 # Component-Specific Analysis: Separating Receptor and Vaccine Groups
 
-For RMSF and radius of gyration analyses, the receptor and vaccine components were separated into distinct index groups. This is important because the receptor and vaccine may differ substantially in size, residue numbering, flexibility, and structural compactness.
+For `RMSF` and radius of gyration `(Rg)` analyses, the receptor and vaccine components were *separated* into distinct index groups. This is important because the receptor and vaccine may differ substantially in size, residue numbering, flexibility, and structural compactness.
 
-Analyzing the full complex alone can obscure component-specific behavior. For example, high flexibility in the vaccine construct may be masked by the larger receptor, while receptor compactness may dominate the radius of gyration profile of the full complex. Separating the components allows RMSF and Rg to be interpreted independently for each molecular partner.
+Analyzing the full complex alone can obscure component-specific behavior. For example, high flexibility in the *vaccine* construct may be masked by the larger *receptor*, while receptor compactness may dominate the radius of gyration profile of the full complex. Separating the components allows `RMSF` and `Rg` to be interpreted independently for each molecular partner.
 
-Residue ranges were first confirmed in PyMOL by inspecting the receptor and vaccine sequences. These residue ranges were then used to create separate GROMACS index groups.
+Residue ranges were first confirmed in `PyMOL` by inspecting the receptor and vaccine sequences. These residue ranges were then used to create separate `GROMACS` index groups.
 
 ## Create Receptor and Vaccine Index Groups
 
@@ -168,7 +168,7 @@ Residue ranges were first confirmed in PyMOL by inspecting the receptor and vacc
 gmx make_ndx -f step5_production.tpr -n index.ndx -o index_separated.ndx
 ```
 
-Within the interactive GROMACS prompt, enter `l` to list available residue and atom groups, then define the receptor and vaccine groups by residue index:
+Within the interactive `GROMACS` prompt, enter `l` to list available residue and atom groups, then define the *receptor* and *vaccine* groups by <u>residue index</u>:
 
 ```text
 l
@@ -179,7 +179,7 @@ name 17 Vaccine
 q
 ```
 
-The residue ranges shown here are system-specific and should be adjusted according to the receptor and vaccine residue numbering in each complex.
+The residue ranges shown here are <u>system-specific</u> and should be adjusted according to the *receptor* and *vaccine* residue numbering in **each complex**.
 
 
 ---
@@ -188,13 +188,13 @@ The residue ranges shown here are system-specific and should be adjusted accordi
 
 # RMSF Analysis
 
-Root Mean Square Fluctuation (RMSF) was used to evaluate residue-level flexibility throughout the MD simulation. RMSF identifies regions of the protein or vaccine construct that exhibit increased atomic displacement over time.
+Root Mean Square Fluctuation `(RMSF)` was used to evaluate <u>residue-level flexibility</u> throughout the MD simulation. `RMSF` identifies regions of the protein or vaccine construct that exhibit **increased** atomic displacement over time.
 
-Higher RMSF values typically correspond to flexible loops, termini, or exposed regions, while lower RMSF values suggest more stable or structurally constrained residues.
+Higher `RMSF` values typically correspond to flexible loops, termini, or exposed regions, while lower `RMSF` values suggest more stable or structurally constrained residues.
 
 ## GROMACS Commands
 
-Calculate RMSF for the vaccine component:
+Calculate `RMSF` for the vaccine component:
 
 ```bash
 echo "Vaccine" | gmx rmsf \
@@ -205,7 +205,7 @@ echo "Vaccine" | gmx rmsf \
   -n index_separated.ndx
 ```
 
-Calculate RMSF for the receptor component:
+Calculate `RMSF` for the receptor component:
 
 ```bash
 echo "Receptor" | gmx rmsf \
@@ -228,9 +228,9 @@ knitr::include_graphics(file.path(plot_dir, "rmsf_example_plot.png"))
 
 # Radius of Gyration Analysis
 
-Radius of Gyration (Rg) was used to assess the compactness of the vaccine-receptor complex over time. Rg measures the distribution of atoms around the center of mass of the molecule.
+Radius of Gyration `(Rg)` was used to assess the compactness of the vaccine-receptor complex over time. `Rg` measures the distribution of atoms around the center of mass of the molecule.
 
-Stable Rg values suggest that the system maintains compactness during simulation, while increasing Rg values may indicate unfolding, expansion, or loosening of the complex.
+Stable `Rg` values suggest that the system maintains compactness during simulation, while increasing `Rg` values may indicate unfolding, expansion, or loosening of the complex.
 
 ## GROMACS Commands
 
@@ -289,7 +289,7 @@ knitr::include_graphics(file.path(plot_dir, "hbond_example_plot.png"))
 
 # Representative Structure Extraction
 
-Representative structures were extracted from the processed MD trajectory using GROMACS. This step fits the trajectory, performs clustering, and extracts a central representative structure for downstream visualization and electrostatic surface analysis.
+Representative structures were extracted from the processed MD trajectory using `GROMACS`. This step fits the trajectory, performs clustering, and extracts a central representative structure for downstream visualization and electrostatic surface analysis.
 
 ---
 
@@ -306,7 +306,7 @@ bash scripts/post_processing/extract_average_frame.sh
 The script performs the following steps:
 
 1. Fits the trajectory using rotational and translational alignment.
-2. Clusters the fitted trajectory using the GROMOS method.
+2. Clusters the fitted trajectory using the `GROMOS` method.
 3. Extracts a representative central structure from the clustered trajectory.
 
 
@@ -409,13 +409,13 @@ knitr::include_graphics(file.path(plot_dir, "comparison/docking_vs_md.png"))
 
 ## RMSD Evaluation
 
-PyMOL reports RMSD after alignment:
+PyMOL reports `RMSD` after alignment:
 
 ```python
 rms_cur md, docking
 ```
 
-Lower RMSD values indicate structural stability, while higher values suggest conformational rearrangement during simulation.
+Lower `RMSD` values indicate structural stability, while higher values suggest conformational rearrangement during simulation.
 
 
 ---
@@ -431,7 +431,7 @@ Lower RMSD values indicate structural stability, while higher values suggest con
 - **High RMSD (> 5 Å):**  
   Indicates significant structural rearrangement, potentially reflecting instability or alternative binding modes.
 
-Structural deviations should be interpreted alongside RMSD, RMSF, and hydrogen bonding analyses to determine whether changes are stabilizing or destabilizing.
+Structural deviations should be interpreted alongside `RMSD`, `RMSF`, and `hydrogen bonding` analyses to determine whether changes are *stabilizing* or *destabilizing*.
 
 
 ---
@@ -488,13 +488,13 @@ knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_interface
 
 # Electrostatic Surface Representation
 
-This section describes the workflow used to compute and visualize Electrostatic Surface Potentials for representative MD structures using APBS and PyMOL.
+This section describes the workflow used to compute and visualize Electrostatic Surface Potentials for representative MD structures using `APBS` and `PyMOL`.
 
 ---
 
 ## Environment Setup
 
-Create and activate a dedicated Conda environment:
+Create and activate a dedicated `Conda` environment:
 
 ```bash
 conda create -n electrostatics_env python=3.10 -y
@@ -506,7 +506,7 @@ conda install -c conda-forge pdb2pqr apbs
 
 ## Structure Preparation
 
-Convert the representative MD structure (`md_rep_structure.pdb`) to PQR format:
+Convert the representative MD structure (`md_rep_structure.pdb`) to `PQR` format:
 
 ```bash
 pdb2pqr30 --ff CHARMM md_rep_structure.pdb complex_md.pqr
@@ -516,7 +516,7 @@ pdb2pqr30 --ff CHARMM md_rep_structure.pdb complex_md.pqr
 
 ## APBS Input File
 
-Create an APBS input file (e.g., `complex_md.in`):
+Create an `APBS` input file (e.g., `complex_md.in`):
 
 ```bash
 nano complex_md.in

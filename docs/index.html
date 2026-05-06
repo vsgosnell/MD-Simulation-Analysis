@@ -462,9 +462,9 @@ Vaccine–Receptor complexes.</p>
 <p>The workflow includes:</p>
 <ul>
 <li>Trajectory Combination and Processing</li>
-<li>Root Mean Square Deviation (RMSD) analysis</li>
-<li>Root Mean Square Fluctuation (RMSF) analysis</li>
-<li>Radius of Gyration (Rg) analysis</li>
+<li>Root Mean Square Deviation <code>(RMSD)</code> analysis</li>
+<li>Root Mean Square Fluctuation <code>(RMSF)</code> analysis</li>
+<li>Radius of Gyration <code>(Rg)</code> analysis</li>
 <li>Hydrogen Bond analysis</li>
 <li>Representative Structure Extraction</li>
 <li>Comparison of Docking and MD-Refined Structures</li>
@@ -539,14 +539,14 @@ downstream analysis</li>
 </div>
 <div id="rmsd-analysis" class="section level1">
 <h1>RMSD Analysis</h1>
-<p>Root Mean Square Deviation (RMSD) was used to evaluate the overall
-structural stability of the vaccine-receptor complex over time. RMSD
-measures the average positional deviation of selected atoms relative to
-a reference structure.</p>
-<p>Lower and plateauing RMSD values generally suggest that the system
-has reached structural stability, while large or continuously increasing
-RMSD values may indicate conformational instability or major structural
-rearrangement.</p>
+<p>Root Mean Square Deviation <code>(RMSD)</code> was used to evaluate
+the overall structural stability of the vaccine-receptor complex over
+time. RMSD measures the average positional deviation of selected atoms
+relative to a reference structure.</p>
+<p>Lower and plateauing <code>RMSD</code> values generally suggest that
+the system has reached structural stability, while large or continuously
+increasing <code>RMSD</code> values may indicate conformational
+instability or major structural rearrangement.</p>
 <div id="gromacs-command" class="section level2">
 <h2>GROMACS Command</h2>
 <pre class="bash"><code>gmx rms -f out.xtc -s step5_production.tpr -n index.ndx -o rmsd.xvg -tu ns</code></pre>
@@ -562,56 +562,60 @@ vaccine-receptor complex over time.</em></p>
 <div id="component-specific-analysis-separating-receptor-and-vaccine-groups" class="section level1">
 <h1>Component-Specific Analysis: Separating Receptor and Vaccine
 Groups</h1>
-<p>For RMSF and radius of gyration analyses, the receptor and vaccine
-components were separated into distinct index groups. This is important
-because the receptor and vaccine may differ substantially in size,
-residue numbering, flexibility, and structural compactness.</p>
+<p>For <code>RMSF</code> and radius of gyration <code>(Rg)</code>
+analyses, the receptor and vaccine components were <em>separated</em>
+into distinct index groups. This is important because the receptor and
+vaccine may differ substantially in size, residue numbering,
+flexibility, and structural compactness.</p>
 <p>Analyzing the full complex alone can obscure component-specific
-behavior. For example, high flexibility in the vaccine construct may be
-masked by the larger receptor, while receptor compactness may dominate
-the radius of gyration profile of the full complex. Separating the
-components allows RMSF and Rg to be interpreted independently for each
-molecular partner.</p>
-<p>Residue ranges were first confirmed in PyMOL by inspecting the
-receptor and vaccine sequences. These residue ranges were then used to
-create separate GROMACS index groups.</p>
+behavior. For example, high flexibility in the <em>vaccine</em>
+construct may be masked by the larger <em>receptor</em>, while receptor
+compactness may dominate the radius of gyration profile of the full
+complex. Separating the components allows <code>RMSF</code> and
+<code>Rg</code> to be interpreted independently for each molecular
+partner.</p>
+<p>Residue ranges were first confirmed in <code>PyMOL</code> by
+inspecting the receptor and vaccine sequences. These residue ranges were
+then used to create separate <code>GROMACS</code> index groups.</p>
 <div id="create-receptor-and-vaccine-index-groups" class="section level2">
 <h2>Create Receptor and Vaccine Index Groups</h2>
 <pre class="bash"><code>gmx make_ndx -f step5_production.tpr -n index.ndx -o index_separated.ndx</code></pre>
-<p>Within the interactive GROMACS prompt, enter <code>l</code> to list
-available residue and atom groups, then define the receptor and vaccine
-groups by residue index:</p>
+<p>Within the interactive <code>GROMACS</code> prompt, enter
+<code>l</code> to list available residue and atom groups, then define
+the <em>receptor</em> and <em>vaccine</em> groups by <u>residue
+index</u>:</p>
 <pre class="text"><code>l
 ri 1-279
 name 16 Receptor
 ri 280-387
 name 17 Vaccine
 q</code></pre>
-<p>The residue ranges shown here are system-specific and should be
-adjusted according to the receptor and vaccine residue numbering in each
-complex.</p>
+<p>The residue ranges shown here are <u>system-specific</u> and should
+be adjusted according to the <em>receptor</em> and <em>vaccine</em>
+residue numbering in <strong>each complex</strong>.</p>
 <hr />
 </div>
 </div>
 <div id="rmsf-analysis" class="section level1">
 <h1>RMSF Analysis</h1>
-<p>Root Mean Square Fluctuation (RMSF) was used to evaluate
-residue-level flexibility throughout the MD simulation. RMSF identifies
-regions of the protein or vaccine construct that exhibit increased
-atomic displacement over time.</p>
-<p>Higher RMSF values typically correspond to flexible loops, termini,
-or exposed regions, while lower RMSF values suggest more stable or
-structurally constrained residues.</p>
+<p>Root Mean Square Fluctuation <code>(RMSF)</code> was used to evaluate
+<u>residue-level flexibility</u> throughout the MD simulation.
+<code>RMSF</code> identifies regions of the protein or vaccine construct
+that exhibit <strong>increased</strong> atomic displacement over
+time.</p>
+<p>Higher <code>RMSF</code> values typically correspond to flexible
+loops, termini, or exposed regions, while lower <code>RMSF</code> values
+suggest more stable or structurally constrained residues.</p>
 <div id="gromacs-commands-1" class="section level2">
 <h2>GROMACS Commands</h2>
-<p>Calculate RMSF for the vaccine component:</p>
+<p>Calculate <code>RMSF</code> for the vaccine component:</p>
 <pre class="bash"><code>echo &quot;Vaccine&quot; | gmx rmsf \
   -s step5_production.tpr \
   -f step-all.xtc \
   -o rmsf_vaccine.xvg \
   -res \
   -n index_separated.ndx</code></pre>
-<p>Calculate RMSF for the receptor component:</p>
+<p>Calculate <code>RMSF</code> for the receptor component:</p>
 <pre class="bash"><code>echo &quot;Receptor&quot; | gmx rmsf \
   -s step5_production.tpr \
   -f step-all.xtc \
@@ -630,12 +634,13 @@ analyze them individually.</em></p>
 </div>
 <div id="radius-of-gyration-analysis" class="section level1">
 <h1>Radius of Gyration Analysis</h1>
-<p>Radius of Gyration (Rg) was used to assess the compactness of the
-vaccine-receptor complex over time. Rg measures the distribution of
-atoms around the center of mass of the molecule.</p>
-<p>Stable Rg values suggest that the system maintains compactness during
-simulation, while increasing Rg values may indicate unfolding,
-expansion, or loosening of the complex.</p>
+<p>Radius of Gyration <code>(Rg)</code> was used to assess the
+compactness of the vaccine-receptor complex over time. <code>Rg</code>
+measures the distribution of atoms around the center of mass of the
+molecule.</p>
+<p>Stable <code>Rg</code> values suggest that the system maintains
+compactness during simulation, while increasing <code>Rg</code> values
+may indicate unfolding, expansion, or loosening of the complex.</p>
 <div id="gromacs-commands-2" class="section level2">
 <h2>GROMACS Commands</h2>
 <p>Calculate radius of gyration for the vaccine component:</p>
@@ -685,8 +690,8 @@ simulation.</em></p>
 <div id="representative-structure-extraction" class="section level1">
 <h1>Representative Structure Extraction</h1>
 <p>Representative structures were extracted from the processed MD
-trajectory using GROMACS. This step fits the trajectory, performs
-clustering, and extracts a central representative structure for
+trajectory using <code>GROMACS</code>. This step fits the trajectory,
+performs clustering, and extracts a central representative structure for
 downstream visualization and electrostatic surface analysis.</p>
 <hr />
 <p>From the repository root:</p>
@@ -698,7 +703,8 @@ downstream visualization and electrostatic surface analysis.</p>
 <ol style="list-style-type: decimal">
 <li>Fits the trajectory using rotational and translational
 alignment.</li>
-<li>Clusters the fitted trajectory using the GROMOS method.</li>
+<li>Clusters the fitted trajectory using the <code>GROMOS</code>
+method.</li>
 <li>Extracts a representative central structure from the clustered
 trajectory.</li>
 </ol>
@@ -779,10 +785,11 @@ clarification.</em></p>
 </div>
 <div id="rmsd-evaluation" class="section level2">
 <h2>RMSD Evaluation</h2>
-<p>PyMOL reports RMSD after alignment:</p>
+<p>PyMOL reports <code>RMSD</code> after alignment:</p>
 <pre class="python"><code>rms_cur md, docking</code></pre>
-<p>Lower RMSD values indicate structural stability, while higher values
-suggest conformational rearrangement during simulation.</p>
+<p>Lower <code>RMSD</code> values indicate structural stability, while
+higher values suggest conformational rearrangement during
+simulation.</p>
 <hr />
 </div>
 <div id="interpretation" class="section level2">
@@ -798,9 +805,10 @@ packing.</p></li>
 Indicates significant structural rearrangement, potentially reflecting
 instability or alternative binding modes.</p></li>
 </ul>
-<p>Structural deviations should be interpreted alongside RMSD, RMSF, and
-hydrogen bonding analyses to determine whether changes are stabilizing
-or destabilizing.</p>
+<p>Structural deviations should be interpreted alongside
+<code>RMSD</code>, <code>RMSF</code>, and <code>hydrogen bonding</code>
+analyses to determine whether changes are <em>stabilizing</em> or
+<em>destabilizing</em>.</p>
 <hr />
 </div>
 <div id="interface-visualization" class="section level2">
@@ -838,11 +846,11 @@ changes.</p>
 <h1>Electrostatic Surface Representation</h1>
 <p>This section describes the workflow used to compute and visualize
 Electrostatic Surface Potentials for representative MD structures using
-APBS and PyMOL.</p>
+<code>APBS</code> and <code>PyMOL</code>.</p>
 <hr />
 <div id="environment-setup" class="section level2">
 <h2>Environment Setup</h2>
-<p>Create and activate a dedicated Conda environment:</p>
+<p>Create and activate a dedicated <code>Conda</code> environment:</p>
 <pre class="bash"><code>conda create -n electrostatics_env python=3.10 -y
 conda activate electrostatics_env
 conda install -c conda-forge pdb2pqr apbs</code></pre>
@@ -851,13 +859,14 @@ conda install -c conda-forge pdb2pqr apbs</code></pre>
 <div id="structure-preparation" class="section level2">
 <h2>Structure Preparation</h2>
 <p>Convert the representative MD structure
-(<code>md_rep_structure.pdb</code>) to PQR format:</p>
+(<code>md_rep_structure.pdb</code>) to <code>PQR</code> format:</p>
 <pre class="bash"><code>pdb2pqr30 --ff CHARMM md_rep_structure.pdb complex_md.pqr</code></pre>
 <hr />
 </div>
 <div id="apbs-input-file" class="section level2">
 <h2>APBS Input File</h2>
-<p>Create an APBS input file (e.g., <code>complex_md.in</code>):</p>
+<p>Create an <code>APBS</code> input file (e.g.,
+<code>complex_md.in</code>):</p>
 <pre class="bash"><code>nano complex_md.in</code></pre>
 <p>Insert the following:</p>
 <pre><code>read
