@@ -395,13 +395,7 @@ color blue, interface and (interface like receptor)
 color green, interface and (interface like vaccine)
 ```
 
-```{r electrostatics-interface, echo=FALSE, out.width="85%", fig.align="center"}
-knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_interface.png"))
-```
-
-
 ---
-
 
 ## Output
 
@@ -415,6 +409,15 @@ png docking_vs_md.png
 Multiple orientations are recommended to capture interface changes.
 
 ---
+
+
+```{r electrostatics-interface, echo=FALSE, out.width="85%", fig.align="center"}
+knitr::include_graphics(file.path(plot_dir, "electrostatics/md_complex_interface.png"))
+```
+
+
+---
+
 
 # Electrostatic Surface Representation
 
@@ -569,20 +572,6 @@ set two_sided_lighting, on
 ```{r electrostatics-receptor-surface, echo=FALSE, out.width="85%", fig.align="center"}
 knitr::include_graphics(file.path(plot_dir, "electrostatics/receptor_surface.png"))
 ```
-
-
----
-
-## Output
-
-High-resolution images can be generated using PyMOL rendering:
-
-```python
-ray 3000,3000
-png electrostatic_surface.png
-```
-
-Multiple orientations (e.g., 180° rotations) are recommended for publication-quality figures.
 
 
 ---
