@@ -358,6 +358,18 @@ display: none;
 <ul>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
 <li><a href="#setup-gromacs-environment" id="toc-setup-gromacs-environment">Setup GROMACS Environment</a></li>
+<li><a href="#running-md-simulation-jobs-on-slurm" id="toc-running-md-simulation-jobs-on-slurm">Running MD Simulation Jobs
+on SLURM</a>
+<ul>
+<li><a href="#submit-minimization-and-equilibration" id="toc-submit-minimization-and-equilibration">Submit Minimization and
+Equilibration</a></li>
+<li><a href="#submit-production-run-1" id="toc-submit-production-run-1">Submit Production Run 1</a></li>
+<li><a href="#submit-production-run-2" id="toc-submit-production-run-2">Submit Production Run 2</a></li>
+<li><a href="#recommended-submit-jobs-with-dependencies" id="toc-recommended-submit-jobs-with-dependencies">Recommended: Submit
+Jobs with Dependencies</a></li>
+<li><a href="#full-pipeline-submission" id="toc-full-pipeline-submission">Full Pipeline Submission</a></li>
+<li><a href="#notes" id="toc-notes">Notes</a></li>
+</ul></li>
 <li><a href="#run-the-full-analysis" id="toc-run-the-full-analysis">Run
 the Full Analysis</a></li>
 <li><a href="#trajectory-combination-and-processing" id="toc-trajectory-combination-and-processing">Trajectory Combination
@@ -442,7 +454,7 @@ Representation</a></li>
 Representation</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#notes" id="toc-notes">Notes</a>
+<li><a href="#notes-1" id="toc-notes-1">Notes</a>
 <ul>
 <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 <li><a href="#reproducibility-and-extensibility" id="toc-reproducibility-and-extensibility">Reproducibility and
@@ -456,20 +468,32 @@ Directions</a></li>
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This vignette demonstrates the analysis workflow used to process and
-visualize Molecular Dynamics (MD) simulation outputs from
-Vaccine–Receptor complexes.</p>
+<p>This vignette presents a reproducible workflow for performing,
+processing, analyzing, and visualizing Molecular Dynamics (MD)
+simulations of vaccine–receptor complexes using GROMACS, R, APBS, and
+PyMOL.</p>
+<p>The workflow spans the complete simulation pipeline, beginning with
+SLURM-based high-performance computing (HPC) simulation setup and
+continuing through trajectory processing, structural analysis,
+representative structure extraction, and electrostatic surface
+visualization.</p>
 <p>The workflow includes:</p>
 <ul>
-<li>Trajectory Combination and Processing</li>
-<li>Root Mean Square Deviation <code>(RMSD)</code> analysis</li>
-<li>Root Mean Square Fluctuation <code>(RMSF)</code> analysis</li>
-<li>Radius of Gyration <code>(Rg)</code> analysis</li>
-<li>Hydrogen Bond analysis</li>
-<li>Representative Structure Extraction</li>
-<li>Comparison of Docking and MD-Refined Structures</li>
-<li>Electrostatic Surface Representation</li>
+<li>SLURM-based simulation execution</li>
+<li>Energy minimization and equilibration</li>
+<li>Multi-stage production MD simulations</li>
+<li>Trajectory combination and processing</li>
+<li>Root Mean Square Deviation (<code>RMSD</code>) analysis</li>
+<li>Root Mean Square Fluctuation (<code>RMSF</code>) analysis</li>
+<li>Radius of Gyration (<code>Rg</code>) analysis</li>
+<li>Hydrogen bond analysis</li>
+<li>Representative structure extraction</li>
+<li>Comparison of docking and MD-refined structures</li>
+<li>Electrostatic surface representation and visualization</li>
 </ul>
+<p>This workflow is designed to support reproducible analysis of
+protein–protein interaction systems and can be adapted for additional
+molecular simulation studies.</p>
 <hr />
 </div>
 <div id="setup-gromacs-environment" class="section level1">
@@ -478,6 +502,86 @@ Vaccine–Receptor complexes.</p>
 
 conda activate gromacs2025</code></pre>
 <hr />
+</div>
+<div id="running-md-simulation-jobs-on-slurm" class="section level1">
+<h1>Running MD Simulation Jobs on SLURM</h1>
+<p>The simulation stage of this workflow is designed to run on a
+SLURM-based high-performance computing (HPC) system. The simulation
+scripts are provided in the <code>scripts/simulation/</code> directory
+and should be submitted using <code>sbatch</code>.</p>
+<p>The workflow includes three main simulation stages:</p>
+<ol style="list-style-type: decimal">
+<li>Minimization and equilibration</li>
+<li>Production run 1</li>
+<li>Production run 2 / continuation run</li>
+</ol>
+<hr />
+<div id="submit-minimization-and-equilibration" class="section level2">
+<h2>Submit Minimization and Equilibration</h2>
+<p>The minimization and equilibration script performs energy
+minimization followed by NVT and NPT equilibration.</p>
+<p>From the repository root, submit the job using:</p>
+<pre class="bash"><code>sbatch scripts/simulation/minimization_equilibration.sh</code></pre>
+<p>After submission, SLURM will return a job ID:</p>
+<pre class="text"><code>Submitted batch job 123456</code></pre>
+<hr />
+</div>
+<div id="submit-production-run-1" class="section level2">
+<h2>Submit Production Run 1</h2>
+<p>After minimization and equilibration complete successfully, submit
+the first production run:</p>
+<pre class="bash"><code>sbatch scripts/simulation/production_run1.sh</code></pre>
+<p>This script starts the first production MD simulation using the
+equilibrated system files.</p>
+<hr />
+</div>
+<div id="submit-production-run-2" class="section level2">
+<h2>Submit Production Run 2</h2>
+<p>After production run 1 completes successfully, submit the
+continuation run:</p>
+<pre class="bash"><code>sbatch scripts/simulation/production_run2.sh</code></pre>
+<p>This script continues the simulation from the checkpoint or output
+files generated by production run 1.</p>
+<hr />
+</div>
+<div id="recommended-submit-jobs-with-dependencies" class="section level2">
+<h2>Recommended: Submit Jobs with Dependencies</h2>
+<p>To avoid manually waiting for each job to finish, SLURM job
+dependencies can be used so that each step begins only after the
+previous step completes successfully.</p>
+<pre class="bash"><code>job1=$(sbatch scripts/simulation/minimization_equilibration.sh | awk &#39;{print $4}&#39;)
+
+job2=$(sbatch --dependency=afterok:$job1 scripts/simulation/production_run1.sh | awk &#39;{print $4}&#39;)
+
+job3=$(sbatch --dependency=afterok:$job2 scripts/simulation/production_run2.sh | awk &#39;{print $4}&#39;)</code></pre>
+<p>This ensures:</p>
+<ul>
+<li>Production run 1 starts only if minimization/equilibration completes
+successfully</li>
+<li>Production run 2 starts only if production run 1 completes
+successfully</li>
+</ul>
+<hr />
+</div>
+<div id="full-pipeline-submission" class="section level2">
+<h2>Full Pipeline Submission</h2>
+<p>A full SLURM submission script is also provided at the repository
+root:</p>
+<pre class="bash"><code>bash run_all.sh</code></pre>
+<p>This script submits the simulation and post-processing workflow using
+SLURM job dependencies.</p>
+<hr />
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<p>SLURM options such as partition, wall time, number of nodes, number
+of tasks, and memory requirements should be adjusted according to the
+target HPC system.</p>
+<p>The simulation scripts are intended for HPC execution and are not
+expected to run directly on a local laptop unless GROMACS and the
+required input files are configured locally.</p>
+<hr />
+</div>
 </div>
 <div id="run-the-full-analysis" class="section level1">
 <h1>Run the Full Analysis</h1>
@@ -955,7 +1059,7 @@ set two_sided_lighting, on</code></pre>
 </div>
 </div>
 </div>
-<div id="notes" class="section level1">
+<div id="notes-1" class="section level1">
 <h1>Notes</h1>
 <ul>
 <li>HPC scripts are designed for SLURM-based clusters</li>
