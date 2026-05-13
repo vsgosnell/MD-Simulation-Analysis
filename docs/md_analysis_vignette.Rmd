@@ -67,7 +67,7 @@ conda activate gromacs2025
 
 # Running MD Simulation Jobs on SLURM
 
-The simulation stage of this workflow is designed to run on a SLURM-based high-performance computing (HPC) system. The simulation scripts are provided in the `scripts/simulation/` directory and should be submitted using `sbatch`.
+The simulation stage of this workflow is designed to run on a `SLURM`-based high-performance computing (`HPC`) system. The simulation scripts are provided in the `scripts/simulation/` directory and should be submitted using `sbatch`.
 
 The workflow includes three main simulation stages:
 
@@ -87,7 +87,7 @@ From the repository root, submit the job using:
 sbatch scripts/simulation/minimization_equilibration.sh
 ```
 
-After submission, SLURM will return a job ID:
+After submission, `SLURM` will return a job ID:
 
 ```text
 Submitted batch job 123456
@@ -97,13 +97,13 @@ Submitted batch job 123456
 
 ## Submit Production Run 1
 
-After minimization and equilibration complete successfully, submit the first production run:
+After **minimization** and **equilibration** complete successfully, submit the first production run:
 
 ```bash
 sbatch scripts/simulation/production_run1.sh
 ```
 
-This script starts the first production MD simulation using the equilibrated system files.
+This script starts the first production `MD` simulation using the equilibrated system files.
 
 ---
 
@@ -121,7 +121,7 @@ This script continues the simulation from the checkpoint or output files generat
 
 ## Recommended: Submit Jobs with Dependencies
 
-To avoid manually waiting for each job to finish, SLURM job dependencies can be used so that each step begins only after the previous step completes successfully.
+To avoid manually waiting for each job to finish, `SLURM` job dependencies can be used so that each step begins only after the previous step completes successfully.
 
 ```bash
 job1=$(sbatch scripts/simulation/minimization_equilibration.sh | awk '{print $4}')
@@ -140,21 +140,21 @@ This ensures:
 
 ## Full Pipeline Submission
 
-A full SLURM submission script is also provided at the repository root:
+A full `SLURM` submission script is also provided at the repository root:
 
 ```bash
 bash run_all.sh
 ```
 
-This script submits the simulation and post-processing workflow using SLURM job dependencies.
+This script submits the simulation and post-processing workflow using `SLURM` job dependencies.
 
 ---
 
 ## Notes
 
-SLURM options such as partition, wall time, number of nodes, number of tasks, and memory requirements should be adjusted according to the target HPC system.
+`SLURM` options such as partition, wall time, number of nodes, number of tasks, and memory requirements should be adjusted according to the target `HPC` system.
 
-The simulation scripts are intended for HPC execution and are not expected to run directly on a local laptop unless GROMACS and the required input files are configured locally.
+The simulation scripts are intended for `HPC` execution and are not expected to run directly on a local laptop unless `GROMACS` and the required input files are configured locally.
 
 
 ---
