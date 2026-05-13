@@ -738,8 +738,8 @@ knitr::include_graphics(file.path(plot_dir, "electrostatics/receptor_surface.png
 
 # Notes
 
-- HPC scripts are designed for SLURM-based clusters
-- Group indices in GROMACS may vary depending on the system
+- `HPC` scripts are designed for `SLURM`-based clusters
+- Group indices in `GROMACS` may vary depending on the system
 
 ---
 
@@ -747,13 +747,13 @@ knitr::include_graphics(file.path(plot_dir, "electrostatics/receptor_surface.png
 
 Presented here is a reproducible and modular workflow for the analysis and visualization of molecular dynamics simulations of vaccine–receptor complexes. Beginning with raw trajectory data, the pipeline integrates trajectory processing, quantitative stability metrics, representative structure extraction, and structure-based visualization into a unified framework.
 
-System stability and conformational behavior are evaluated using complementary metrics, including **root mean square deviation** `(RMSD)`, **root mean square fluctuation** `(RMSF)`, and **radius of gyration** `(Rg)`, alongside **hydrogen bonding analysis** `(hbond)` to characterize interaction persistence. Together, these measures provide a multidimensional assessment of structural integrity, flexibility, and intermolecular stability throughout the simulation.
+System stability and conformational behavior are evaluated using complementary metrics, including **root mean square deviation** (`RMSD`), **root mean square fluctuation** (`RMSF`), and **radius of gyration** (`Rg`), alongside **hydrogen bonding analysis** (`hbond`) to characterize interaction persistence. Together, these measures provide a multidimensional assessment of structural integrity, flexibility, and intermolecular stability throughout the simulation.
 
-Extraction of a representative structure via clustering enables downstream structural interpretation and facilitates direct comparison between initial docking models and MD-refined conformations. This comparison reveals interface-level adjustments and conformational refinement, offering insight into the stability and plausibility of predicted binding modes.
+Extraction of a representative structure via clustering enables downstream structural interpretation and facilitates direct comparison between initial docking models and `MD`-refined conformations. This comparison reveals interface-level adjustments and conformational refinement, offering insight into the stability and plausibility of predicted binding modes.
 
 Electrostatic surface potential calculations, performed using **APBS** and visualized in **PyMOL**, further extend the analysis by <u>mapping charge distributions</u> and identifying potential *interaction hotspots* at the molecular interface.
 
-Collectively, this workflow establishes a robust and extensible platform for the interpretation of MD simulations in the context of **structure-based vaccine design** and **protein–protein interaction analysis**.
+Collectively, this workflow establishes a robust and extensible platform for the interpretation of `MD` simulations in the context of **structure-based vaccine design** and **protein–protein interaction analysis**.
 
 ---
 
