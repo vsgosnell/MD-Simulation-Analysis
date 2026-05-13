@@ -9,22 +9,22 @@ output:
 
 # Overview
 
-This vignette presents a reproducible workflow for performing, processing, analyzing, and visualizing Molecular Dynamics (MD) simulations of vaccine–receptor complexes using GROMACS, R, APBS, and PyMOL.
+This vignette presents a reproducible workflow for performing, processing, analyzing, and visualizing Molecular Dynamics (`MD`) simulations of vaccine–receptor complexes using `GROMACS`, `R`, `APBS`, and `PyMOL`.
 
-The workflow spans the complete simulation pipeline, beginning with SLURM-based high-performance computing (HPC) simulation setup and continuing through trajectory processing, structural analysis, representative structure extraction, and electrostatic surface visualization.
+The workflow spans the complete simulation pipeline, beginning with SLURM-based high-performance computing (`HPC`) simulation setup and continuing through **trajectory processing**, **structural analysis**, **representative structure extraction**, and **electrostatic surface visualization**.
 
 The workflow includes:
 
-- SLURM-based simulation execution
+- `SLURM`-based simulation execution
 - Energy minimization and equilibration
-- Multi-stage production MD simulations
+- Multi-stage production `MD` simulations
 - Trajectory combination and processing
 - Root Mean Square Deviation (`RMSD`) analysis
 - Root Mean Square Fluctuation (`RMSF`) analysis
 - Radius of Gyration (`Rg`) analysis
 - Hydrogen bond analysis
 - Representative structure extraction
-- Comparison of docking and MD-refined structures
+- Comparison of docking and `MD`-refined structures
 - Electrostatic surface representation and visualization
 
 This workflow is designed to support reproducible analysis of protein–protein interaction systems and can be adapted for additional molecular simulation studies.
