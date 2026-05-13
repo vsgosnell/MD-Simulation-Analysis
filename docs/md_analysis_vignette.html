@@ -375,7 +375,6 @@ the Full Analysis</a></li>
 <li><a href="#trajectory-combination-and-processing" id="toc-trajectory-combination-and-processing">Trajectory Combination
 and Processing</a>
 <ul>
-<li><a href="#run-trajectory-processing" id="toc-run-trajectory-processing">Run Trajectory Processing</a></li>
 <li><a href="#workflow-summary" id="toc-workflow-summary">Workflow
 Summary</a></li>
 <li><a href="#gromacs-commands" id="toc-gromacs-commands">GROMACS
@@ -601,13 +600,8 @@ root using:</p>
 prior to downstream analysis. This step generates a continuous
 trajectory and applies periodic boundary condition correction and
 centering for visualization and analysis.</p>
-<p>The trajectory processing workflow is provided in:</p>
-<pre class="bash"><code>scripts/post_processing/combine_trajectories.sh</code></pre>
-<div id="run-trajectory-processing" class="section level2">
-<h2>Run Trajectory Processing</h2>
 <p>From the repository root:</p>
 <pre class="bash"><code>bash scripts/post_processing/combine_trajectories.sh</code></pre>
-</div>
 <div id="workflow-summary" class="section level2">
 <h2>Workflow Summary</h2>
 <p>The script performs the following steps:</p>

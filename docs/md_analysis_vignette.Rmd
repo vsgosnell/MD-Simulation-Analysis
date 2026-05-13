@@ -386,8 +386,6 @@ knitr::include_graphics(file.path(plot_dir, "hbond_example_plot.png"))
 
 Representative structures were extracted from the processed MD trajectory using `GROMACS`. This step fits the trajectory, performs clustering, and extracts a central representative structure for downstream visualization and electrostatic surface analysis.
 
----
-
 From the repository root:
 
 ```bash
