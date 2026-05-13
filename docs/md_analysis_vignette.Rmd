@@ -173,14 +173,6 @@ source("scripts/analysis/run_analysis.R")
 
 Multiple production trajectory segments were combined and processed prior to downstream analysis. This step generates a continuous trajectory and applies periodic boundary condition correction and centering for visualization and analysis.
 
-The trajectory processing workflow is provided in:
-
-```bash
-scripts/post_processing/combine_trajectories.sh
-```
-
-## Run Trajectory Processing
-
 From the repository root:
 
 ```bash
