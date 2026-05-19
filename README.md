@@ -40,18 +40,26 @@ https://vsgosnell.github.io/MD-Simulation-Analysis/
 
 ## Repository Structure
 
-```
+```text
 scripts/
-  simulation/         # GROMACS simulation workflows
-  post_processing/    # Trajectory processing & structure extraction
-  analysis/           # R scripts for analysis and plotting
+  simulation/         # GROMACS minimization, equilibration, and production MD workflows
+  post_processing/    # Trajectory processing and representative structure extraction
+  analysis/           # R scripts for MD analysis and plotting
 
-data/                 # Example processed datasets
-plots/                # Example output figures
-docs/                 # Detailed workflow & vignette
+data/                 # Example processed datasets (.csv, .xvg)
+results/
+  structures/         # Representative MD-derived structures
 
-run_all.sh            # SLURM pipeline script
-environment.yml       # Conda environment
+plots/
+  analysis/           # RMSD, RMSF, Rg, and hydrogen bond figures
+  comparison/         # Docking vs MD structural comparison figures
+  electrostatics/     # APBS/PyMOL electrostatic visualization outputs
+
+docs/                 # Workflow vignette and protocol documentation
+
+run_all.sh            # SLURM dependency-based workflow submission
+environment.yml       # Conda environment configuration
+README.md             # Repository overview and usage instructions
 ```
 
 ---
