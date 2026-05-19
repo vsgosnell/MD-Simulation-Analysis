@@ -21,7 +21,6 @@ logs/
 *.ndx
 
 # Large/untracked result folders
-results/
 raw_data/
 full_trajectories/
 
